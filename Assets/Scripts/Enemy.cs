@@ -5,10 +5,17 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     private float _enemySpeed = 4f;
+    Player _player;
+    
     // Start is called before the first frame update
     void Start()
     {
-        
+        _player = FindObjectOfType<Player>().GetComponent<Player>();
+
+        if(!_player)
+        {
+            Debug.LogError("Enemy could not get the player - NULL CHECK");
+        }
     }
 
     // Update is called once per frame
@@ -29,6 +36,16 @@ public class Enemy : MonoBehaviour
         if(other.gameObject.tag == "Player")
         {
             Destroy(this.gameObject);
+            Player player = other.GetComponent<Player>();
+            if(player)
+            {
+                player.Lives--;
+
+                if (_player.Lives < 1)
+                {
+                    Destroy(other.gameObject);
+                }
+            }
 
         }
 

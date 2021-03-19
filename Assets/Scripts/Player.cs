@@ -14,6 +14,21 @@ public class Player : MonoBehaviour
     private float _cooldownTime = 0.5f;
     private float _fireTime;
 
+    [SerializeField] private int _lives = 3;
+
+    public int Lives
+    {
+        get
+        {
+            return _lives;
+        }
+        set
+        {
+            _lives = value;
+        }
+
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -44,6 +59,7 @@ public class Player : MonoBehaviour
         Vector3 direction = new Vector3(_xAxis, _yAxis, 0);
 
         transform.Translate(direction * _speed * Time.deltaTime);
+
         transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, -4.8f, 0), 0);
 
         if (transform.position.x > 10.2f)
