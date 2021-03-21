@@ -35,18 +35,12 @@ public class Enemy : MonoBehaviour
     {
         if(other.gameObject.tag == "Player")
         {
-            Destroy(this.gameObject);
             Player player = other.GetComponent<Player>();
             if(player)
             {
-                player.Lives--;
-
-                if (_player.Lives < 1)
-                {
-                    Destroy(other.gameObject);
-                }
+                player.Damage();
             }
-
+            Destroy(this.gameObject);
         }
 
         else if(other.gameObject.tag == "Laser")

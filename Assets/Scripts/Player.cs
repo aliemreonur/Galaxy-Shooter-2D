@@ -9,24 +9,18 @@ public class Player : MonoBehaviour
 
     [SerializeField] private GameObject _laser;
     [SerializeField] private float _speed = 4f;
-
-
     private float _cooldownTime = 0.5f;
     private float _fireTime;
 
     [SerializeField] private int _lives = 3;
 
-    public int Lives
+    public int Live
     {
         get
         {
             return _lives;
         }
-        set
-        {
-            _lives = value;
-        }
-
+        
     }
 
     // Start is called before the first frame update
@@ -69,6 +63,15 @@ public class Player : MonoBehaviour
         else if (transform.position.x < -10.2f)
         {
             transform.position = new Vector3(10.2f, transform.position.y, 0);
+        }
+    }
+
+    public void Damage()
+    {
+        _lives--;
+        if(_lives ==0)
+        {
+            Destroy(this.gameObject);
         }
     }
 }
