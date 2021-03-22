@@ -7,10 +7,13 @@ public class Player : MonoBehaviour
     private float _xAxis;  
     private float _yAxis;
 
-    [SerializeField] private GameObject _laser;
-    [SerializeField] private float _speed = 4f;
-    private float _cooldownTime = 0.5f;
+    [SerializeField] private GameObject _laser, _tripleLaser;
+    [SerializeField] private float _speed = 6f;
+    private float _cooldownTime = 0.2f;
     private float _fireTime;
+
+    [SerializeField]
+    private bool _tripleShotActive = false;
 
     [SerializeField] private int _lives = 3;
 
@@ -42,7 +45,15 @@ public class Player : MonoBehaviour
     private void Fire()
     {
         _fireTime = Time.time + _cooldownTime;
-        Instantiate(_laser, new Vector3(transform.position.x, transform.position.y + 0.6f,0), Quaternion.identity);
+        if(!_tripleShotActive)
+        {
+            Instantiate(_laser, new Vector3(transform.position.x, transform.position.y + 1f, 0), Quaternion.identity);
+        }
+        else
+        {
+            Instantiate(_tripleLaser, new Vector3(transform.position.x, transform.position.y, 0), Quaternion.identity);
+        }
+        
     }
 
     private void Movement()
