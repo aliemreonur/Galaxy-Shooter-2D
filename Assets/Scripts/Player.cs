@@ -12,6 +12,9 @@ public class Player : MonoBehaviour
     private float _cooldownTime = 0.2f;
     private float _fireTime;
 
+    [SerializeField] private GameObject _shield;
+    private bool _shieldActive;
+
     [SerializeField]
     private bool _tripleShotActive = false;
 
@@ -22,14 +25,14 @@ public class Player : MonoBehaviour
         get
         {
             return _lives;
-        }
-        
+        }      
     }
 
     // Start is called before the first frame update
     void Start()
     {
         transform.position = new Vector3(0, -3, 0);
+        _shield.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -79,10 +82,55 @@ public class Player : MonoBehaviour
 
     public void Damage()
     {
-        _lives--;
-        if(_lives ==0)
+        if(_shieldActive)
         {
-            Destroy(this.gameObject);
+            _shieldActive = false;
+            _shield.gameObject.SetActive(false);
+        }
+        else
+        {
+            _lives--;
+            if (_lives == 0)
+            {
+                Destroy(this.gameObject);
+            }
+        }      
+    }
+
+    public void TripleShotActive()
+    {
+        _tripleShotActive = true;
+        StartCoroutine(TripleShotCoroutine());
+    }
+
+    public void SpeedActive()
+    {
+        _speed = 10f;
+        StartCoroutine(SpeedActiveCoroutine());
+    }
+
+    public void ShieldActive()
+    {
+        _shieldActive = true;
+        _shield.gameObject.SetActive(true);
+    }
+
+    IEnumerator TripleShotCoroutine()
+    {
+       if(_tripleShotActive)
+        {
+            yield return new WaitForSeconds(5f);
+            _tripleShotActive = false;
         }
     }
+
+    IEnumerator SpeedActiveCoroutine()
+    {
+        if(_speed == 10f)
+        {
+            yield return new WaitForSeconds(5f);
+            _speed = 6f;
+        }
+    }
+
 }

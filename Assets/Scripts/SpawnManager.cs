@@ -5,7 +5,11 @@ using UnityEngine;
 public class SpawnManager : MonoBehaviour
 {
     [SerializeField] private Enemy enemy;
-    Vector3 _posToSpawn;
+    [SerializeField] GameObject[] _powerUps;
+
+    [SerializeField] private int _selectedPowerUp;
+
+    Vector3 _posToSpawn, _pos2ToSpawn;
     [SerializeField] float _spawnTime = 3f;
     Player player;
     [SerializeField] Transform enemyContainer;
@@ -16,7 +20,8 @@ public class SpawnManager : MonoBehaviour
         player = GameObject.Find("Player").GetComponent<Player>();
         if(player)
         {
-            StartCoroutine(SpawnRoutine());
+            StartCoroutine(SpawnEnemyRoutine());
+            StartCoroutine(SpawnPowerUpRoutine());
         }
         
     }
@@ -28,15 +33,26 @@ public class SpawnManager : MonoBehaviour
         
     }
 
-    IEnumerator SpawnRoutine()
+    IEnumerator SpawnEnemyRoutine()
     {
         while(player.Live > 0)
         {
             _posToSpawn = new Vector3(Random.Range(-9, 9), 6.20f, 0);
             Enemy spawnedEnemy = Instantiate(enemy, _posToSpawn, Quaternion.identity);
             spawnedEnemy.transform.parent = enemyContainer.transform;
-            yield return new WaitForSeconds(_spawnTime);
+            yield return new WaitForSeconds(3);
         } 
+    }
+
+    IEnumerator SpawnPowerUpRoutine()
+    {
+        while(player.Live>0)
+        {
+            _selectedPowerUp = Random.Range(0, 3);
+            _pos2ToSpawn = new Vector3(Random.Range(-9, 9), 6.20f, 0);
+            Instantiate(_powerUps[_selectedPowerUp], _pos2ToSpawn, Quaternion.identity);
+            yield return new WaitForSeconds(Random.Range(5f, 7f));    
+        }
     }
 
 }
