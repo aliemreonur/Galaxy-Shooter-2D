@@ -7,10 +7,10 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] private Enemy enemy;
     [SerializeField] GameObject[] _powerUps;
 
-    [SerializeField] private int _selectedPowerUp;
+    private int _selectedPowerUp;
 
     Vector3 _posToSpawn, _pos2ToSpawn;
-    [SerializeField] float _spawnTime = 3f;
+    float _spawnTime = 3f;
     Player player;
     [SerializeField] Transform enemyContainer;
  

@@ -19,6 +19,9 @@ public class Player : MonoBehaviour
     private bool _tripleShotActive = false;
 
     [SerializeField] private int _lives = 3;
+    [SerializeField] private int _score = 0;
+
+    UIManager _uiManager;
 
     public int Live
     {
@@ -28,9 +31,22 @@ public class Player : MonoBehaviour
         }      
     }
 
+    public int Score
+    {
+        get
+        {
+            return _score;
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
+        _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
+        if(!_uiManager)
+        {
+            Debug.LogError("Player Could not get the UI Manager");
+        }
         transform.position = new Vector3(0, -3, 0);
         _shield.gameObject.SetActive(false);
     }
@@ -90,8 +106,10 @@ public class Player : MonoBehaviour
         else
         {
             _lives--;
+            _uiManager.UpdateLives(_lives);
             if (_lives == 0)
             {
+                _uiManager.GameOver();
                 Destroy(this.gameObject);
             }
         }      
@@ -113,6 +131,12 @@ public class Player : MonoBehaviour
     {
         _shieldActive = true;
         _shield.gameObject.SetActive(true);
+    }
+
+    public void AddScore(int points)
+    {
+        _score += points;
+        _uiManager.UpdateScore(_score);
     }
 
     IEnumerator TripleShotCoroutine()

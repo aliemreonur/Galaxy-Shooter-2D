@@ -32,22 +32,24 @@ public class Powerup : MonoBehaviour
         if(other.tag == "Player")
         {
             Player player = other.GetComponent<Player>();
-            if(player)
+          
+            switch(_powerUpID)
             {
-                if(_powerUpID == 1)
-                {
+                case 1:
                     player.TripleShotActive();
-                }
-                else if(_powerUpID == 2)
-                {
+                    break;
+                case 2:
                     player.SpeedActive();
-                }
-                else if(_powerUpID ==3)
-                {
+                    break;
+                case 3:
                     player.ShieldActive();
-                }
-                
+                    break;
+                default:
+                    Debug.Log("Default");
+                    break;
             }
+
+
             Destroy(this.gameObject);
         }
         
