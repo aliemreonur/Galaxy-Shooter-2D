@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Laser : MonoBehaviour
 {
-    [SerializeField] private float _laserSpeed = 5f;
+    [SerializeField] private float _laserSpeed = 7f;
     // Start is called before the first frame update
   
 

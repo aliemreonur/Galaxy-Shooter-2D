@@ -10,7 +10,7 @@ public class SpawnManager : MonoBehaviour
     private int _selectedPowerUp;
 
     Vector3 _posToSpawn, _pos2ToSpawn;
-    float _spawnTime = 3f;
+    [SerializeField] float _spawnTime = 3f;
     Player player;
     [SerializeField] Transform enemyContainer;
  
@@ -18,12 +18,17 @@ public class SpawnManager : MonoBehaviour
     void Start()
     {
         player = GameObject.Find("Player").GetComponent<Player>();
-        if(player)
+        if(player == null)
         {
-            StartCoroutine(SpawnEnemyRoutine());
-            StartCoroutine(SpawnPowerUpRoutine());
+          Debug.LogError("Spawn Manager could not get the player");
         }
         
+    }
+
+    public void StartSpawn()
+    {
+        StartCoroutine(SpawnEnemyRoutine());
+        StartCoroutine(SpawnPowerUpRoutine());
     }
 
     // Update is called once per frame
@@ -35,12 +40,13 @@ public class SpawnManager : MonoBehaviour
 
     IEnumerator SpawnEnemyRoutine()
     {
-        while(player.Live > 0)
+        while(player.Live > 0 )
         {
-            _posToSpawn = new Vector3(Random.Range(-9, 9), 6.20f, 0);
+            yield return new WaitForSeconds(2f);
+            _posToSpawn = new Vector3(Random.Range(-9, 9), 7.20f, 0);
             Enemy spawnedEnemy = Instantiate(enemy, _posToSpawn, Quaternion.identity);
             spawnedEnemy.transform.parent = enemyContainer.transform;
-            yield return new WaitForSeconds(3);
+            yield return new WaitForSeconds(_spawnTime);
         } 
     }
 
@@ -48,11 +54,11 @@ public class SpawnManager : MonoBehaviour
     {
         while(player.Live>0)
         {
+            yield return new WaitForSeconds(2f);
             _selectedPowerUp = Random.Range(0, 3);
-            _pos2ToSpawn = new Vector3(Random.Range(-9, 9), 6.20f, 0);
+            _pos2ToSpawn = new Vector3(Random.Range(-9, 9), 7.20f, 0);
             Instantiate(_powerUps[_selectedPowerUp], _pos2ToSpawn, Quaternion.identity);
             yield return new WaitForSeconds(Random.Range(5f, 7f));    
         }
     }
-
 }

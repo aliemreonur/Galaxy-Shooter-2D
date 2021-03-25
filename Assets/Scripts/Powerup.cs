@@ -7,11 +7,16 @@ public class Powerup : MonoBehaviour
     [SerializeField] private float _speed = 3f;
     [SerializeField] private int _powerUpID;
 
+    Player player;
+
     // Start is called before the first frame update
     void Start()
     {
-       
-
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+        if(!player)
+        {
+            Debug.LogError("Power up script could not gather the player script");
+        }
     }
 
     // Update is called once per frame
@@ -28,12 +33,9 @@ public class Powerup : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-     
-        if(other.tag == "Player")
+        if (other.tag == "Player")
         {
-            Player player = other.GetComponent<Player>();
-          
-            switch(_powerUpID)
+            switch (_powerUpID)
             {
                 case 1:
                     player.TripleShotActive();
@@ -45,13 +47,12 @@ public class Powerup : MonoBehaviour
                     player.ShieldActive();
                     break;
                 default:
-                    Debug.Log("Default");
+                    Debug.Log("Error! - CHECK!");
                     break;
             }
-
-
             Destroy(this.gameObject);
         }
-        
+
     }
+
 }

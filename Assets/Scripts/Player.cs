@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
     private float _yAxis;
 
     [SerializeField] private GameObject _laser, _tripleLaser;
+    [SerializeField] private GameObject _rightFire, _leftFire, _explosion;
     [SerializeField] private float _speed = 6f;
     private float _cooldownTime = 0.2f;
     private float _fireTime;
@@ -49,6 +50,8 @@ public class Player : MonoBehaviour
         }
         transform.position = new Vector3(0, -3, 0);
         _shield.gameObject.SetActive(false);
+        _leftFire.gameObject.SetActive(false);
+        _rightFire.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -107,10 +110,19 @@ public class Player : MonoBehaviour
         {
             _lives--;
             _uiManager.UpdateLives(_lives);
-            if (_lives == 0)
+            switch (_lives)
             {
-                _uiManager.GameOver();
-                Destroy(this.gameObject);
+                case 2:
+                    _rightFire.gameObject.SetActive(true);
+                    break;
+                case 1:
+                    _leftFire.gameObject.SetActive(true);
+                    break;
+                case 0:
+                    Instantiate(_explosion, transform.position, Quaternion.identity);
+                    _uiManager.GameOver();
+                    Destroy(this.gameObject);
+                    break;
             }
         }      
     }
