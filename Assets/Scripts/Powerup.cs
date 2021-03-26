@@ -9,6 +9,8 @@ public class Powerup : MonoBehaviour
 
     Player player;
 
+    AudioSource _audioSource;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -16,6 +18,12 @@ public class Powerup : MonoBehaviour
         if(!player)
         {
             Debug.LogError("Power up script could not gather the player script");
+        }
+
+        _audioSource = GetComponent<AudioSource>();
+        if(_audioSource == null)
+        {
+            Debug.LogError("Power Up Script could not get the audio source, it is NULL");
         }
     }
 
@@ -33,8 +41,10 @@ public class Powerup : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        
         if (other.tag == "Player")
         {
+            _audioSource.Play();
             switch (_powerUpID)
             {
                 case 1:
@@ -50,7 +60,8 @@ public class Powerup : MonoBehaviour
                     Debug.Log("Error! - CHECK!");
                     break;
             }
-            Destroy(this.gameObject);
+            
+            Destroy(this.gameObject, 0.25f);
         }
 
     }

@@ -23,6 +23,8 @@ public class Player : MonoBehaviour
     [SerializeField] private int _score = 0;
 
     UIManager _uiManager;
+    private AudioSource _audioSource;
+    [SerializeField] AudioClip _laserShot, _deathSound;
 
     public int Live
     {
@@ -48,6 +50,17 @@ public class Player : MonoBehaviour
         {
             Debug.LogError("Player Could not get the UI Manager");
         }
+
+        _audioSource = GetComponent<AudioSource>();
+        if(_audioSource == null)
+        {
+            Debug.LogError("Player could not get the audio clip");
+        }
+        else
+        {
+            _audioSource.clip = _laserShot;
+        }
+
         transform.position = new Vector3(0, -3, 0);
         _shield.gameObject.SetActive(false);
         _leftFire.gameObject.SetActive(false);
@@ -75,7 +88,8 @@ public class Player : MonoBehaviour
         {
             Instantiate(_tripleLaser, new Vector3(transform.position.x, transform.position.y, 0), Quaternion.identity);
         }
-        
+        _audioSource.Play();
+
     }
 
     private void Movement()
@@ -120,6 +134,7 @@ public class Player : MonoBehaviour
                     break;
                 case 0:
                     Instantiate(_explosion, transform.position, Quaternion.identity);
+                    _audioSource.clip = _deathSound;
                     _uiManager.GameOver();
                     Destroy(this.gameObject);
                     break;

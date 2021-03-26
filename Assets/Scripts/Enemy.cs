@@ -7,6 +7,7 @@ public class Enemy : MonoBehaviour
     private float _enemySpeed = 4f;
     Player _player;
     Animator _anim;
+    AudioSource _audioSource;
     
     // Start is called before the first frame update
     void Start()
@@ -21,6 +22,12 @@ public class Enemy : MonoBehaviour
         if(!_player)
         {
             Debug.LogError("Enemy could not get the player - NULL CHECK");
+        }
+
+        _audioSource = GetComponent<AudioSource>();
+        if(_audioSource == null)
+        {
+            Debug.LogError("Enemy could ont get the audio source -  NULL CHECK");
         }
     }
 
@@ -49,7 +56,8 @@ public class Enemy : MonoBehaviour
             }
             _anim.SetTrigger("OnEnemyDeath");
             _enemySpeed = 0;
-            Destroy(this.gameObject, 0.5f);
+            _audioSource.Play();
+            Destroy(this.gameObject, 0.8f);
         }
 
         else if(other.gameObject.tag == "Laser")
@@ -61,7 +69,8 @@ public class Enemy : MonoBehaviour
             }
             _anim.SetTrigger("OnEnemyDeath");
             _enemySpeed = 0;
-            Destroy(this.gameObject, 0.5f);
+            _audioSource.Play();
+            Destroy(this.gameObject, 0.8f);
         }
     }
 }
