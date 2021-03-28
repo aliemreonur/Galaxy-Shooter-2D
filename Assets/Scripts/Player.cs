@@ -9,18 +9,23 @@ public class Player : MonoBehaviour
 
     [SerializeField] private GameObject _laser, _tripleLaser;
     [SerializeField] private GameObject _rightFire, _leftFire, _explosion;
+    [SerializeField] private GameObject _speedyThruster;
     [SerializeField] private float _speed = 6f;
     private float _cooldownTime = 0.2f;
     private float _fireTime;
 
     [SerializeField] private GameObject _shield;
     private bool _shieldActive;
+    private bool _thrustActive;
+    private bool _speedActive;
 
     [SerializeField]
     private bool _tripleShotActive = false;
 
     [SerializeField] private int _lives = 3;
     [SerializeField] private int _score = 0;
+    [SerializeField] private int _shieldLives = 3;
+    private int _ammo = 15;
 
     UIManager _uiManager;
     private AudioSource _audioSource;
@@ -39,6 +44,14 @@ public class Player : MonoBehaviour
         get
         {
             return _score;
+        }
+    }
+
+    public int Ammo
+    {
+        get
+        {
+            return _ammo;
         }
     }
 
@@ -61,6 +74,8 @@ public class Player : MonoBehaviour
             _audioSource.clip = _laserShot;
         }
 
+        _speedyThruster.gameObject.SetActive(false);
+
         transform.position = new Vector3(0, -3, 0);
         _shield.gameObject.SetActive(false);
         _leftFire.gameObject.SetActive(false);
@@ -75,21 +90,53 @@ public class Player : MonoBehaviour
         {
             Fire();
         }
+        ThrustMove();
     }
 
     private void Fire()
     {
-        _fireTime = Time.time + _cooldownTime;
-        if(!_tripleShotActive)
-        {
-            Instantiate(_laser, new Vector3(transform.position.x, transform.position.y + 1f, 0), Quaternion.identity);
-        }
-        else
-        {
-            Instantiate(_tripleLaser, new Vector3(transform.position.x, transform.position.y, 0), Quaternion.identity);
-        }
-        _audioSource.Play();
+            _fireTime = Time.time + _cooldownTime;
+            if (!_tripleShotActive)
+            {
+                Instantiate(_laser, new Vector3(transform.position.x, transform.position.y + 1f, 0), Quaternion.identity);
+            }
+            else
+            {
+                Instantiate(_tripleLaser, new Vector3(transform.position.x, transform.position.y, 0), Quaternion.identity);
+            }
+        
+            _audioSource.Play();
+      
 
+    }
+
+    private void ThrustMove()
+    {
+        if( Input.GetKey(KeyCode.LeftShift))
+        {
+            _thrustActive = true;
+            _speedyThruster.gameObject.SetActive(true);
+        }
+        else if(Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            _thrustActive = false;
+            _speedyThruster.gameObject.SetActive(false);
+        }
+        if (_thrustActive)
+        {
+            if(_speedActive)
+            {
+                _speed = 12f;
+            }
+            else
+            {
+                _speed = 9f;
+            }
+        }
+        else if (!_thrustActive && !_speedActive)
+        {
+            _speed = 6f;
+        }
     }
 
     private void Movement()
@@ -117,8 +164,24 @@ public class Player : MonoBehaviour
     {
         if(_shieldActive)
         {
-            _shieldActive = false;
-            _shield.gameObject.SetActive(false);
+            switch(_shieldLives)
+            {
+                case 3:
+                    _shieldLives--;
+                    Color color1 = new Color32(188, 119, 119, 255);
+                    _shield.GetComponent<SpriteRenderer>().color = color1;
+                    
+                    break;
+                case 2:
+                    _shieldLives--;
+                    StartCoroutine(ShieldRoutine1());
+                    break;
+                case 1:
+                    _shieldLives--;
+                    _shieldActive = false;
+                    _shield.gameObject.SetActive(false);
+                    break;
+            }
         }
         else
         {
@@ -142,6 +205,15 @@ public class Player : MonoBehaviour
         }      
     }
 
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if(other.tag == "EnemyLaser")
+        {
+            Damage();
+        }
+    }
+
+
     public void TripleShotActive()
     {
         _tripleShotActive = true;
@@ -150,14 +222,16 @@ public class Player : MonoBehaviour
 
     public void SpeedActive()
     {
-        _speed = 10f;
+        _speedActive = true;
+        _speed = 12f;
         StartCoroutine(SpeedActiveCoroutine());
     }
 
     public void ShieldActive()
     {
-        _shieldActive = true;
+       
         _shield.gameObject.SetActive(true);
+        _shieldActive = true;
     }
 
     public void AddScore(int points)
@@ -177,11 +251,25 @@ public class Player : MonoBehaviour
 
     IEnumerator SpeedActiveCoroutine()
     {
-        if(_speed == 10f)
+        if(_speed == 12f)
         {
             yield return new WaitForSeconds(5f);
             _speed = 6f;
+            _speedActive = false;
         }
+    }
+
+    IEnumerator ShieldRoutine1()
+    {
+        while (_shieldLives >0)
+        {
+            _shield.gameObject.SetActive(false);
+            yield return new WaitForSeconds(0.1f);
+            _shield.gameObject.SetActive(true);
+            yield return new WaitForSeconds(0.1f);
+
+        }
+
     }
 
 }

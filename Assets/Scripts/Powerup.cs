@@ -8,8 +8,8 @@ public class Powerup : MonoBehaviour
     [SerializeField] private int _powerUpID;
 
     Player player;
-
-    AudioSource _audioSource;
+    
+    [SerializeField] private AudioClip _audioclip;
 
     // Start is called before the first frame update
     void Start()
@@ -20,11 +20,7 @@ public class Powerup : MonoBehaviour
             Debug.LogError("Power up script could not gather the player script");
         }
 
-        _audioSource = GetComponent<AudioSource>();
-        if(_audioSource == null)
-        {
-            Debug.LogError("Power Up Script could not get the audio source, it is NULL");
-        }
+        
     }
 
     // Update is called once per frame
@@ -44,7 +40,7 @@ public class Powerup : MonoBehaviour
         
         if (other.tag == "Player")
         {
-            _audioSource.Play();
+            AudioSource.PlayClipAtPoint(_audioclip, transform.position);
             switch (_powerUpID)
             {
                 case 1:

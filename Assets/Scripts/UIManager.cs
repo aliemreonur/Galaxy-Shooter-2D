@@ -13,6 +13,7 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] private Text _gameOverText;
     [SerializeField] private Text _restartLevelText;
+    [SerializeField] private Text _ammmoText;
 
     GameManager _gameManager;
 
@@ -58,6 +59,11 @@ public class UIManager : MonoBehaviour
         StartCoroutine(GameOverRoutine());
         _gameManager.GameOver();
         
+    }
+
+    public void UpdateAmmo()
+    {
+        _ammmoText.text = player.Ammo.ToString();
     }
 
     IEnumerator GameOverRoutine()

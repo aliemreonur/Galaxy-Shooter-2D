@@ -43,7 +43,7 @@ public class SpawnManager : MonoBehaviour
         while(player.Live > 0 )
         {
             yield return new WaitForSeconds(2f);
-            _posToSpawn = new Vector3(Random.Range(-9, 9), 7.20f, 0);
+            _posToSpawn = new Vector3(Random.Range(-9, 9), 7f, 0);
             Enemy spawnedEnemy = Instantiate(enemy, _posToSpawn, Quaternion.identity);
             spawnedEnemy.transform.parent = enemyContainer.transform;
             yield return new WaitForSeconds(_spawnTime);
@@ -56,7 +56,7 @@ public class SpawnManager : MonoBehaviour
         {
             yield return new WaitForSeconds(2f);
             _selectedPowerUp = Random.Range(0, 3);
-            _pos2ToSpawn = new Vector3(Random.Range(-9, 9), 7.20f, 0);
+            _pos2ToSpawn = new Vector3(Random.Range(-9, 9), 7f, 0);
             Instantiate(_powerUps[_selectedPowerUp], _pos2ToSpawn, Quaternion.identity);
             yield return new WaitForSeconds(Random.Range(5f, 7f));    
         }
