@@ -50,7 +50,11 @@ public class UIManager : MonoBehaviour
 
     public void UpdateLives(int lives)
     {
-        _livesImg.sprite = _liveSprites[lives];
+        if(lives >= 0)
+        {
+            _livesImg.sprite = _liveSprites[lives];
+        }
+        
     }
 
     public void GameOver()
@@ -64,6 +68,10 @@ public class UIManager : MonoBehaviour
     public void UpdateAmmo()
     {
         _ammmoText.text = player.Ammo.ToString();
+        if(player.Ammo <= 0)
+        {
+            StartCoroutine(AmmoOutRoutine());
+        }
     }
 
     IEnumerator GameOverRoutine()
@@ -75,7 +83,19 @@ public class UIManager : MonoBehaviour
             _gameOverText.gameObject.SetActive(false);
             yield return new WaitForSeconds(0.5f);
         }
-        
            
+    }
+
+
+    IEnumerator AmmoOutRoutine()
+    {
+        while(player.Ammo <= 0)
+        {
+            _ammmoText.gameObject.SetActive(false);
+            yield return new WaitForSeconds(0.5f);
+            _ammmoText.gameObject.SetActive(true);
+            yield return new WaitForSeconds(0.5f);
+        }
+      
     }
 }

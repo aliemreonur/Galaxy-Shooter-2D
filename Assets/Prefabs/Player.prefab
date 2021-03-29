@@ -215,7 +215,6 @@ GameObject:
   - component: {fileID: 517432969610913010}
   - component: {fileID: 517432969610913009}
   - component: {fileID: 517432969610913008}
-  - component: {fileID: 5322641280525708490}
   m_Layer: 0
   m_Name: Player_Shield
   m_TagString: Untagged
@@ -307,18 +306,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &5322641280525708490
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 517432969610913011}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: af9b2e2e04de46342887214a22c40be4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1628222132307228580
 GameObject:
   m_ObjectHideFlags: 0
@@ -428,13 +415,16 @@ MonoBehaviour:
   _leftFire: {fileID: 1725293298652335582}
   _explosion: {fileID: 7478513726425228802, guid: 3acda4bdcad2ff4428870f9c6dc59518, type: 3}
   _speedyThruster: {fileID: 886888075}
+  _ultiShoot: {fileID: 6064077143993129690, guid: 755dabf2a559f9b4383993cf40ad7dfd, type: 3}
   _speed: 6
   _shield: {fileID: 517432969610913011}
   _tripleShotActive: 0
   _lives: 3
   _score: 0
+  _shieldLives: 3
   _laserShot: {fileID: 8300000, guid: 75676f361bdfeaf41a46623e95df3dbc, type: 3}
   _deathSound: {fileID: 8300000, guid: a885c043fab7e46438bba03ba9dab6bc, type: 3}
+  _outofAmmo: {fileID: 8300000, guid: 88a5dbade2c0c7b44abc15aa99a88173, type: 3}
 --- !u!61 &7207708025993479752
 BoxCollider2D:
   m_ObjectHideFlags: 0

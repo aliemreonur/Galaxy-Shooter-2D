@@ -575,6 +575,9 @@ MonoBehaviour:
   - {fileID: 8786498644064009544, guid: a64db42feefa77d4b97924ae2c969132, type: 3}
   - {fileID: 8111160893624062270, guid: 1cdfc4f05522cea48bdbf36599147735, type: 3}
   - {fileID: 4362907083144712856, guid: d2d417f2633a6d449b8222404f4299d0, type: 3}
+  - {fileID: 4435427538962631185, guid: f8c4bbd8c937ad14da39679bb36e888a, type: 3}
+  - {fileID: 3994330862637979133, guid: 06a43742c2a70d84aae79be020059e14, type: 3}
+  - {fileID: 6064077143993129690, guid: 755dabf2a559f9b4383993cf40ad7dfd, type: 3}
   _spawnTime: 3
   enemyContainer: {fileID: 358810826}
 --- !u!4 &927945672
@@ -1373,7 +1376,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5400306555732645284, guid: b3330aceab5a27b4995840bd5a089a47, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -4.03
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5400306555732645284, guid: b3330aceab5a27b4995840bd5a089a47, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1411,8 +1414,7 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 5322641280525708490, guid: b3330aceab5a27b4995840bd5a089a47, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b3330aceab5a27b4995840bd5a089a47, type: 3}
 --- !u!1001 &6593586586542291050
 PrefabInstance:

@@ -15,7 +15,7 @@ public class Powerup : MonoBehaviour
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
-        if(!player)
+        if(player == null)
         {
             Debug.LogError("Power up script could not gather the player script");
         }
@@ -51,6 +51,12 @@ public class Powerup : MonoBehaviour
                     break;
                 case 3:
                     player.ShieldActive();
+                    break;
+                case 4:
+                    player.AddLife();
+                    break;
+                case 5:
+                    player.AddAmmo();
                     break;
                 default:
                     Debug.Log("Error! - CHECK!");
