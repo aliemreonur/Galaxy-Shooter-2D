@@ -62,7 +62,7 @@ public class Powerup : MonoBehaviour
                     player.UltiActive();
                     break;
                 default:
-                    Debug.Log("Error! - CHECK!");
+                    Debug.Log("Error! - CHECK THE POWERUP SCRIPT!");
                     break;
             }
             

@@ -39,6 +39,7 @@ public class Player : MonoBehaviour
     Color defaultShieldColor;
     SpriteRenderer _shieldSpriteRenderer;
     
+    private float _thrustLeft = 1;
 
     public int Live
     {
@@ -123,12 +124,12 @@ public class Player : MonoBehaviour
         if (_ammo > 0)
         {
             _fireTime = Time.time + _cooldownTime;
-            if(_ultiActive && !_tripleShotActive)
+            if(_ultiActive)
             {
                 StartCoroutine(UltiRoutine());
                 Instantiate(_ultiShoot, transform.position, Quaternion.identity);
             }
-            else if(_tripleShotActive)
+            else if(_tripleShotActive && !_ultiActive)
             {
                 Instantiate(_tripleLaser, new Vector3(transform.position.x, transform.position.y, 0), Quaternion.identity);
             }
@@ -152,15 +153,27 @@ public class Player : MonoBehaviour
 
     private void ThrustMove()
     {
-        if( Input.GetKey(KeyCode.LeftShift))
+        if(Input.GetKey(KeyCode.LeftShift))
         {
-            _thrustActive = true;
-            _speedyThruster.gameObject.SetActive(true);
+            if(_thrustLeft >= 0)
+            {
+                _thrustActive = true;
+                _speedyThruster.gameObject.SetActive(true);
+                _speedyThruster.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+                StartCoroutine(UseThrustRoutine());
+            }
+            else
+            {
+                _thrustActive = false;
+                _speedyThruster.transform.localScale = new Vector3(1, 1, 1);
+                _speedyThruster.gameObject.SetActive(false);
+            }
         }
         else if(Input.GetKeyUp(KeyCode.LeftShift))
         {
             _thrustActive = false;
             _speedyThruster.gameObject.SetActive(false);
+            StartCoroutine(ThrustReloadRoutine());
         }
         if (_thrustActive)
         {
@@ -221,7 +234,6 @@ public class Player : MonoBehaviour
                     _shieldActive = false;
                     _shield.gameObject.SetActive(false);
                     break;
-
             }
         }
         else
@@ -229,6 +241,11 @@ public class Player : MonoBehaviour
             _lives--;
             _cameraShake.ShakeCamera();
             _uiManager.UpdateLives(_lives);
+            if(_lives == 0)
+            {
+                Instantiate(_explosion, transform.position, Quaternion.identity);
+                Destroy(this.gameObject, 0.5f);
+            }           
         }      
     }
 
@@ -354,6 +371,31 @@ public class Player : MonoBehaviour
             yield return new WaitForSeconds(5f);
             _ultiActive = false;
         }        
+    }
+
+    IEnumerator ThrustReloadRoutine()
+    {
+        while(!_thrustActive && _thrustLeft <1)
+        {
+            _thrustLeft = _thrustLeft + (0.05f / 10);
+            if(_thrustLeft >1)
+            {
+                _thrustLeft = 1;
+            }
+            _uiManager.SetThruster(_thrustLeft);
+            yield return new WaitForSeconds(0.05f);
+           
+        }
+    }
+
+    IEnumerator UseThrustRoutine()
+    {
+        while(_thrustActive)
+        {
+            _thrustLeft = _thrustLeft - (0.05f / 60);
+            _uiManager.SetThruster(_thrustLeft);
+            yield return new WaitForSeconds(0.05f);
+        }
     }
 
 }

@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {
     [SerializeField] Text _scoreText;
+    [SerializeField] Slider _slider;
     Player player;
 
     [SerializeField] private Sprite[] _liveSprites;
@@ -72,6 +73,11 @@ public class UIManager : MonoBehaviour
         {
             StartCoroutine(AmmoOutRoutine());
         }
+    }
+
+    public void SetThruster(float _thrustAmount)
+    {
+        _slider.value = _thrustAmount;
     }
 
     IEnumerator GameOverRoutine()
