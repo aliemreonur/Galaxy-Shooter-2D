@@ -58,14 +58,18 @@ public class Powerup : MonoBehaviour
                 case 5:
                     player.AddAmmo();
                     break;
+                case 6:
+                    player.UltiActive();
+                    break;
                 default:
                     Debug.Log("Error! - CHECK!");
                     break;
             }
             
-            Destroy(this.gameObject, 0.25f);
+            Destroy(this.gameObject, 0.05f);
         }
 
     }
+
 
 }

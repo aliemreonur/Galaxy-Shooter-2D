@@ -9,6 +9,8 @@ public class Enemy : MonoBehaviour
     Animator _anim;
     AudioSource _audioSource;
 
+    [SerializeField] private AudioClip _audioclip;
+
     private float _coolDown = 3f;
     private float _canFire = -1f;
 
@@ -25,7 +27,7 @@ public class Enemy : MonoBehaviour
         }
         _player = FindObjectOfType<Player>().GetComponent<Player>();
 
-        if(!_player)
+        if(_player == null)
         {
             Debug.LogError("Enemy could not get the player - NULL CHECK");
         }
@@ -79,8 +81,8 @@ public class Enemy : MonoBehaviour
             }
             _anim.SetTrigger("OnEnemyDeath");
             _enemySpeed = 0;
-            _audioSource.Play();
-            Destroy(this.gameObject, 0.8f);
+            _audioSource.Play(); 
+            Destroy(this.gameObject, 0.9f);
         }
 
         else if(other.gameObject.tag == "Laser")
@@ -94,7 +96,7 @@ public class Enemy : MonoBehaviour
             _enemySpeed = 0;
             _audioSource.Play();
             Destroy(GetComponent<Collider2D>());
-            Destroy(this.gameObject, 0.6f);
+            Destroy(this.gameObject, 0.9f);
         }
     }
 

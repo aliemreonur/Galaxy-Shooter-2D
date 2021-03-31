@@ -30,6 +30,9 @@ public class Player : MonoBehaviour
     private int _ammo = 15;
 
     UIManager _uiManager;
+    CameraShake _cameraShake;
+    
+
     private AudioSource _audioSource;
     [SerializeField] AudioClip _laserShot, _deathSound, _outofAmmo;
 
@@ -73,11 +76,17 @@ public class Player : MonoBehaviour
         _audioSource = GetComponent<AudioSource>();
         if(_audioSource == null)
         {
-            Debug.LogError("Player could not get the audio clip");
+            Debug.LogError("Player could not get the audio source");
         }
         else
         {
             _audioSource.clip = _laserShot;
+        }
+
+        _cameraShake = Camera.main.GetComponent<CameraShake>();
+        if(_cameraShake == null)
+        {
+            Debug.LogError("Player could not get the main camera's shake component");
         }
 
         _speedyThruster.gameObject.SetActive(false);
@@ -117,6 +126,7 @@ public class Player : MonoBehaviour
             if(_ultiActive && !_tripleShotActive)
             {
                 StartCoroutine(UltiRoutine());
+                Instantiate(_ultiShoot, transform.position, Quaternion.identity);
             }
             else if(_tripleShotActive)
             {
@@ -133,7 +143,7 @@ public class Player : MonoBehaviour
             _uiManager.UpdateAmmo();
         }
 
-        if(_ammo == 0)
+        else if(_ammo == 0)
         {
             _audioSource.clip = _outofAmmo;
             _audioSource.Play();
@@ -217,6 +227,7 @@ public class Player : MonoBehaviour
         else
         {
             _lives--;
+            _cameraShake.ShakeCamera();
             _uiManager.UpdateLives(_lives);
         }      
     }
@@ -244,6 +255,7 @@ public class Player : MonoBehaviour
                 break;
             case 1:
                 _leftFire.gameObject.SetActive(true);
+                _rightFire.gameObject.SetActive(true);
                 break;
             case 0:
                 Instantiate(_explosion, transform.position, Quaternion.identity);
@@ -272,7 +284,7 @@ public class Player : MonoBehaviour
     public void UltiActive()
     {
         _ultiActive = true;
-     
+        StartCoroutine(UltiRoutine());
     }
 
 
@@ -339,7 +351,6 @@ public class Player : MonoBehaviour
     {
         while(_ultiActive)
         {
-            Instantiate(_ultiShoot, transform.position, Quaternion.identity);
             yield return new WaitForSeconds(5f);
             _ultiActive = false;
         }        
