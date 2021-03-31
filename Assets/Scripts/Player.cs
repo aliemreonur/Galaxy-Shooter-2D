@@ -384,7 +384,6 @@ public class Player : MonoBehaviour
             }
             _uiManager.SetThruster(_thrustLeft);
             yield return new WaitForSeconds(0.05f);
-           
         }
     }
 

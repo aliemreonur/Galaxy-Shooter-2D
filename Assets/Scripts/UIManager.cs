@@ -68,7 +68,7 @@ public class UIManager : MonoBehaviour
 
     public void UpdateAmmo()
     {
-        _ammmoText.text = player.Ammo.ToString();
+        _ammmoText.text = player.Ammo.ToString() + "/15";
         if(player.Ammo <= 0)
         {
             StartCoroutine(AmmoOutRoutine());
