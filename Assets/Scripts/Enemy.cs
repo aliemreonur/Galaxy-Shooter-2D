@@ -16,6 +16,7 @@ public class Enemy : MonoBehaviour
 
     private int _movementDecider;
 
+    SpawnManager _spawnManager;
 
     [SerializeField] GameObject _enemyLaser;
     
@@ -38,6 +39,12 @@ public class Enemy : MonoBehaviour
         if(_audioSource == null)
         {
             Debug.LogError("Enemy could ont get the audio source -  NULL CHECK");
+        }
+
+        _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
+        if(_spawnManager == null)
+        {
+            Debug.LogError("Enemy could not get the spawn manager");
         }
 
         _movementDecider = Random.Range(1, 4);
@@ -124,7 +131,9 @@ public class Enemy : MonoBehaviour
             }
             _anim.SetTrigger("OnEnemyDeath");
             _enemySpeed = 0;
-            _audioSource.Play(); 
+            _audioSource.Play();
+            _spawnManager.ActiveEnemy--;
+            Destroy(GetComponent<BoxCollider2D>());
             Destroy(this.gameObject, 0.9f);
         }
 
@@ -138,7 +147,8 @@ public class Enemy : MonoBehaviour
             _anim.SetTrigger("OnEnemyDeath");
             _enemySpeed = 0;
             _audioSource.Play();
-            Destroy(GetComponent<Collider2D>());
+            _spawnManager.ActiveEnemy--;
+            Destroy(GetComponent<BoxCollider2D>());
             Destroy(this.gameObject, 0.9f);
         }
     }

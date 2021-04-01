@@ -15,6 +15,10 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Text _gameOverText;
     [SerializeField] private Text _restartLevelText;
     [SerializeField] private Text _ammmoText;
+    [SerializeField] private Text _waveNo;
+    [SerializeField] private Text _startToShoot;
+
+    private bool _isGameStarted = false;
 
     GameManager _gameManager;
 
@@ -35,6 +39,8 @@ public class UIManager : MonoBehaviour
         _livesImg.sprite = _liveSprites[3];
         _gameOverText.gameObject.SetActive(false);
         _restartLevelText.gameObject.SetActive(false);
+
+        StartCoroutine(StartToShootRoutine());
     }
 
     // Update is called once per frame
@@ -80,6 +86,17 @@ public class UIManager : MonoBehaviour
         _slider.value = _thrustAmount;
     }
 
+    public void SetWave(int waveNumber)
+    {
+        _waveNo.text = "Wave :" + waveNumber ;
+    }
+
+    public void GameStarted()
+    {
+        _isGameStarted = true;
+        //_startToShoot.gameObject.SetActive(false);
+    }
+
     IEnumerator GameOverRoutine()
     {
         while(true)
@@ -103,5 +120,16 @@ public class UIManager : MonoBehaviour
             yield return new WaitForSeconds(0.5f);
         }
       
+    }
+
+    IEnumerator StartToShootRoutine()
+    {
+        while(!_isGameStarted)
+        {
+            yield return new WaitForSeconds(0.5f);
+            _startToShoot.gameObject.SetActive(true);
+            yield return new WaitForSeconds(0.5f);
+            _startToShoot.gameObject.SetActive(false);
+        }
     }
 }

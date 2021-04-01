@@ -16,6 +16,35 @@ public class SpawnManager : MonoBehaviour
 
     private int _ultiCoolDown = 20;
     private float _latestSpawnedUlti = 0;
+
+    private int _numSpawnedEnemy;
+    private int _wave = 1;
+
+    private bool _ctdSpawn = true;
+
+    [SerializeField] private int _activeEnemy;
+
+    UIManager _uiManager;
+
+    public int Wave
+    {
+        get
+        {
+            return _wave;
+        }
+    }
+
+    public int ActiveEnemy
+    {
+        get
+        {
+            return _activeEnemy;
+        }
+        set
+        {
+            _activeEnemy = value;
+        }
+    }
  
     // Start is called before the first frame update
     void Start()
@@ -25,11 +54,19 @@ public class SpawnManager : MonoBehaviour
         {
           Debug.LogError("Spawn Manager could not get the player");
         }
+
+        _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
+        if(_uiManager == null)
+        {
+            Debug.LogError("Spawn Manager could not get the ui manager");
+        }
         
     }
 
     public void StartSpawn()
     {
+        _uiManager.GameStarted();
+        player.AddAmmo(); //we make sure that player starts the game with full ammo.
         StartCoroutine(SpawnEnemyRoutine());
         StartCoroutine(SpawnPowerUpRoutine());
     }
@@ -39,9 +76,62 @@ public class SpawnManager : MonoBehaviour
         while(player.Live > 0 )
         {
             yield return new WaitForSeconds(2f);
-            _posToSpawn = new Vector3(Random.Range(-9, 9), 7f, 0);
-            Enemy spawnedEnemy = Instantiate(enemy, _posToSpawn, Quaternion.identity);
-            spawnedEnemy.transform.parent = enemyContainer.transform;
+            
+                _posToSpawn = new Vector3(Random.Range(-9, 9), 7f, 0);
+            if(_ctdSpawn)
+            {
+                Enemy spawnedEnemy = Instantiate(enemy, _posToSpawn, Quaternion.identity);
+                spawnedEnemy.transform.parent = enemyContainer.transform;
+                _numSpawnedEnemy++;
+                _activeEnemy++;
+            }
+
+
+            if (_numSpawnedEnemy == 10)
+            {
+                    _ctdSpawn = false;
+                    if (_activeEnemy == 0)
+                    {
+                        _wave = 2;
+                        _uiManager.SetWave(_wave);
+                        _ctdSpawn = true;
+                        _spawnTime = 1.75f;
+                    }
+            }
+
+            else if (_numSpawnedEnemy == 25)
+            {
+                _ctdSpawn = false;
+                if (_activeEnemy == 0)
+                {
+                    _wave = 3;
+                    _uiManager.SetWave(_wave);
+                    _ctdSpawn = true;
+                    _spawnTime = 1.5f;
+                }
+            }
+
+            else if (_numSpawnedEnemy == 45)
+            {
+                _ctdSpawn = false;
+                if (_activeEnemy == 0)
+                {
+                    _wave = 4;
+                    _uiManager.SetWave(_wave);
+                    _ctdSpawn = true;
+                    _spawnTime = 1.25f;
+                }
+            }
+            else if (_numSpawnedEnemy == 70)
+            {
+                _ctdSpawn = false;
+                if (_activeEnemy == 0)
+                {
+                     _wave = 5;
+                     _uiManager.SetWave(_wave);
+                     //boss level
+                }
+            }
             yield return new WaitForSeconds(_spawnTime);
         } 
     }

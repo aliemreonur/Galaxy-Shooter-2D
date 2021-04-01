@@ -244,6 +244,7 @@ public class Player : MonoBehaviour
             if(_lives == 0)
             {
                 Instantiate(_explosion, transform.position, Quaternion.identity);
+                _uiManager.GameOver();
                 Destroy(this.gameObject, 0.5f);
             }           
         }      
@@ -395,6 +396,15 @@ public class Player : MonoBehaviour
             _uiManager.SetThruster(_thrustLeft);
             yield return new WaitForSeconds(0.05f);
         }
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if(other.gameObject.tag == "EnemyLaser")
+        {
+            Destroy(other.gameObject);
+        }
+        
     }
 
 }
