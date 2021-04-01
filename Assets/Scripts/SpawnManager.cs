@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
-    [SerializeField] private Enemy enemy;
+    //[SerializeField] private Enemy enemy;
+    [SerializeField] private GameObject[] enemy;
     [SerializeField] GameObject[] _powerUps;
 
     [SerializeField] private int _selectedPowerUp;
@@ -80,8 +81,22 @@ public class SpawnManager : MonoBehaviour
                 _posToSpawn = new Vector3(Random.Range(-9, 9), 7f, 0);
             if(_ctdSpawn)
             {
-                Enemy spawnedEnemy = Instantiate(enemy, _posToSpawn, Quaternion.identity);
-                spawnedEnemy.transform.parent = enemyContainer.transform;
+                int selectedEnemy = Random.Range(0, 3);
+                //to spawn the new enemy for 1/3 of the time.
+             
+                if(selectedEnemy == 1)
+                {
+                    GameObject spawnedEnemy2 = Instantiate(enemy[1], new Vector3(-10,5,0), Quaternion.identity);
+                    //spawnedEnemy.transform.parent = enemyContainer.transform;
+                    //***
+                    //when this is activated, the object becomes invisible on the game view (but visible on scene view)
+                    //***
+                }
+                else 
+                {
+                    GameObject spawnedEnemy = Instantiate(enemy[0], _posToSpawn, Quaternion.identity);
+                    spawnedEnemy.transform.parent = enemyContainer.transform;
+                }
                 _numSpawnedEnemy++;
                 _activeEnemy++;
             }
