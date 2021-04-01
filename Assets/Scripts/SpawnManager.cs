@@ -15,8 +15,8 @@ public class SpawnManager : MonoBehaviour
     Player player;
     [SerializeField] Transform enemyContainer;
 
-    private int _ultiCoolDown = 20;
-    private float _latestSpawnedUlti = 0;
+    private int _rareCoolDown = 20;
+    private float _latestSpawnedRare = 0;
 
     private int _numSpawnedEnemy;
     private int _wave = 1;
@@ -105,7 +105,7 @@ public class SpawnManager : MonoBehaviour
             if (_numSpawnedEnemy == 10)
             {
                     _ctdSpawn = false;
-                    if (_activeEnemy == 0)
+                    if (_activeEnemy <= 0)
                     {
                         _wave = 2;
                         _uiManager.SetWave(_wave);
@@ -117,7 +117,7 @@ public class SpawnManager : MonoBehaviour
             else if (_numSpawnedEnemy == 25)
             {
                 _ctdSpawn = false;
-                if (_activeEnemy == 0)
+                if (_activeEnemy <= 0)
                 {
                     _wave = 3;
                     _uiManager.SetWave(_wave);
@@ -129,7 +129,7 @@ public class SpawnManager : MonoBehaviour
             else if (_numSpawnedEnemy == 45)
             {
                 _ctdSpawn = false;
-                if (_activeEnemy == 0)
+                if (_activeEnemy <= 0)
                 {
                     _wave = 4;
                     _uiManager.SetWave(_wave);
@@ -140,7 +140,7 @@ public class SpawnManager : MonoBehaviour
             else if (_numSpawnedEnemy == 70)
             {
                 _ctdSpawn = false;
-                if (_activeEnemy == 0)
+                if (_activeEnemy <= 0)
                 {
                      _wave = 5;
                      _uiManager.SetWave(_wave);
@@ -155,15 +155,16 @@ public class SpawnManager : MonoBehaviour
     {
         while(player.Live>0)
         {
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(0.1f);
             _selectedPowerUp = Random.Range(0, 7);
             _pos2ToSpawn = new Vector3(Random.Range(-9, 9), 7f, 0);
-            if(_selectedPowerUp == 5)
+            if(_selectedPowerUp == 2 || _selectedPowerUp == 3 || _selectedPowerUp == 5)
             {
-                if(Time.time > _latestSpawnedUlti)
+                //we want these objects to be spawned more rarely
+                if(Time.time > _latestSpawnedRare)
                 {
-                    Instantiate(_powerUps[5], _pos2ToSpawn, Quaternion.identity);
-                    _latestSpawnedUlti = Time.time + _ultiCoolDown;
+                    Instantiate(_powerUps[_selectedPowerUp], _pos2ToSpawn, Quaternion.identity);
+                    _latestSpawnedRare = Time.time + _rareCoolDown;
                 }
                 else
                 {

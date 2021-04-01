@@ -98,7 +98,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _speed: 3
   _powerUpID: 7
-  _audioclip: {fileID: 8300000, guid: 5ee343246919d2b4bba63ae629e95494, type: 3}
+  _audioclip: {fileID: 8300000, guid: 7ef5dc5d88425084ba05de64a308be6e, type: 3}
 --- !u!58 &5084625143389442334
 CircleCollider2D:
   m_ObjectHideFlags: 0
