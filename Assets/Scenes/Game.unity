@@ -239,7 +239,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &314544696
 GameObject:
@@ -738,6 +738,7 @@ MonoBehaviour:
   - {fileID: 4435427538962631185, guid: f8c4bbd8c937ad14da39679bb36e888a, type: 3}
   - {fileID: 3994330862637979133, guid: 06a43742c2a70d84aae79be020059e14, type: 3}
   - {fileID: 1857615144124541797, guid: b9c376118ead1c844a9b106a7ddd1058, type: 3}
+  - {fileID: 2172111818071049940, guid: a6d5e395d55d36848a19672a74161d4d, type: 3}
   _selectedPowerUp: 0
   _spawnTime: 3
   enemyContainer: {fileID: 358810826}
@@ -865,7 +866,7 @@ Transform:
   m_Children:
   - {fileID: 1431247330}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1194636155
 GameObject:
@@ -1954,7 +1955,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5400306555732645284, guid: b3330aceab5a27b4995840bd5a089a47, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5400306555732645284, guid: b3330aceab5a27b4995840bd5a089a47, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2007,7 +2008,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6593586584949701660, guid: 8e24f12376c442a458fbdb59c33e1ca7, type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 6593586584949701660, guid: 8e24f12376c442a458fbdb59c33e1ca7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

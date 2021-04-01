@@ -141,7 +141,7 @@ public class SpawnManager : MonoBehaviour
         while(player.Live>0)
         {
             yield return new WaitForSeconds(2f);
-            _selectedPowerUp = Random.Range(0, 6);
+            _selectedPowerUp = Random.Range(0, 7);
             _pos2ToSpawn = new Vector3(Random.Range(-9, 9), 7f, 0);
             if(_selectedPowerUp == 5)
             {
@@ -152,7 +152,7 @@ public class SpawnManager : MonoBehaviour
                 }
                 else
                 {
-                    _selectedPowerUp = Random.Range(0, 6);
+                    _selectedPowerUp = Random.Range(0, 7);
                 }
             }
             else
