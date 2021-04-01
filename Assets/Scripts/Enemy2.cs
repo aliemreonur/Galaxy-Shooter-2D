@@ -14,6 +14,9 @@ public class Enemy2 : MonoBehaviour
     private float _canFire = -1f;
 
     [SerializeField] Sprite _laserSprite;
+    [SerializeField] private GameObject _enemyShield;
+
+    private int _shieldDecider;
 
     // Start is called before the first frame update
     void Start()
@@ -32,6 +35,13 @@ public class Enemy2 : MonoBehaviour
         if (_spawnManager == null)
         {
             Debug.LogError("Enemy could not get the spawn manager");
+        }
+
+        _enemyShield.gameObject.SetActive(false);
+        _shieldDecider = Random.Range(0, 2);
+        if (_shieldDecider == 1)
+        {
+            _enemyShield.gameObject.SetActive(true);
         }
 
     }
@@ -64,25 +74,43 @@ public class Enemy2 : MonoBehaviour
             {
                 _player.Damage();
             }
-            _audioSource.Play();
-            _spawnManager.ActiveEnemy--;
-            Destroy(GetComponent<SpriteRenderer>(), 0.1f);
-            Instantiate(_explosion, transform.position, Quaternion.identity);
-            Destroy(this.gameObject, 0.1f);
+            if (_shieldDecider == 1)
+            {
+                _enemyShield.gameObject.SetActive(false);
+                _shieldDecider = 0;
+            }
+            else
+            {
+                _audioSource.Play();
+                _spawnManager.ActiveEnemy--;
+                Destroy(GetComponent<SpriteRenderer>(), 0.1f);
+                Instantiate(_explosion, transform.position, Quaternion.identity);
+                Destroy(this.gameObject, 0.1f);
+            }
+
         }
 
         else if (other.gameObject.tag == "Laser")
         {
             Destroy(other.gameObject);
-            if (_player)
+            if (_shieldDecider == 1)
             {
-                _player.AddScore(10);
+                _enemyShield.gameObject.SetActive(false);
+                _shieldDecider = 0;
             }
-            _audioSource.Play();
-            _spawnManager.ActiveEnemy--;
-            Instantiate(_explosion, transform.position, Quaternion.identity);
-            Destroy(GetComponent<SpriteRenderer>(), 0.1f);
-            Destroy(this.gameObject, 0.1f);
+            else
+            {
+                if (_player)
+                {
+                    _player.AddScore(10);
+                }
+                _audioSource.Play();
+                _spawnManager.ActiveEnemy--;
+                Instantiate(_explosion, transform.position, Quaternion.identity);
+                Destroy(GetComponent<SpriteRenderer>(), 0.1f);
+                Destroy(this.gameObject, 0.1f);
+            }
+   
         }
     }
 
