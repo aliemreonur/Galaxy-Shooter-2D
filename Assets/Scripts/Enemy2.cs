@@ -9,14 +9,22 @@ public class Enemy2 : MonoBehaviour
     Player _player;
     AudioSource _audioSource;
     SpawnManager _spawnManager;
+    Animator _animator;
 
     private float _coolDown = 1.5f;
     private float _canFire = -1f;
+
+    private float _enemy2Speed = 2f;
 
     [SerializeField] Sprite _laserSprite;
     [SerializeField] private GameObject _enemyShield;
 
     private int _shieldDecider;
+    private float _distanceToPlayer;
+    private bool _ramming = false;
+
+    Vector3 _pos;
+
 
     // Start is called before the first frame update
     void Start()
@@ -35,6 +43,11 @@ public class Enemy2 : MonoBehaviour
         if (_spawnManager == null)
         {
             Debug.LogError("Enemy could not get the spawn manager");
+        }
+        _animator = GetComponent<Animator>();
+        if(_animator == null)
+        {
+            Debug.LogError("Enemy2 could not get the animator component");
         }
 
         _enemyShield.gameObject.SetActive(false);
@@ -63,6 +76,33 @@ public class Enemy2 : MonoBehaviour
             }
         }
 
+        _distanceToPlayer = Vector3.Distance(transform.position, _player.transform.position);
+        if (_distanceToPlayer < 4)
+        {
+            _animator.enabled = false;
+            _pos = transform.position;
+            RamPlayer();
+        }
+        else if(_distanceToPlayer > 4 && !_animator.enabled)
+        {
+            //transform.Translate(Vector3.down * _enemy2Speed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, _pos, 2f * Time.deltaTime);
+            
+            _ramming = false;
+
+            if(transform.position == _pos)
+            {
+               _animator.enabled = true;
+            }
+        }
+
+
+    }
+
+    public void RamPlayer()
+    {
+        transform.position = Vector3.MoveTowards(transform.position, _player.transform.position, 2f * Time.deltaTime);
+        _ramming = true;
     }
 
     private void OnTriggerEnter2D(Collider2D other)

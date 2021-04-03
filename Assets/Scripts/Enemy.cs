@@ -18,6 +18,8 @@ public class Enemy : MonoBehaviour
     private int _movementDecider;
     private int _shieldDecider;
 
+    private float _distanceToPlayer;
+
     SpawnManager _spawnManager;
 
     [SerializeField] GameObject _enemyLaser;
@@ -73,6 +75,14 @@ public class Enemy : MonoBehaviour
     void Update()
     {
         Movement();
+        _distanceToPlayer = Vector3.Distance(transform.position, _player.transform.position);
+        if(_distanceToPlayer < 4)
+        {
+            RamPlayer();
+        }
+
+        //Debug.Log("My Distance to enemy is:" + _distanceToPlayer);
+        
         if(Time.time >_canFire)
         {
             _coolDown = Random.Range(3f, 7f);
@@ -128,6 +138,11 @@ public class Enemy : MonoBehaviour
 
     }
 
+
+    public void RamPlayer()
+    {
+        transform.position = Vector3.MoveTowards(transform.position, _player.transform.position, 2f * Time.deltaTime);
+    }
     public void ShieldEnemy()
     {
         //for wave 3 & 4
