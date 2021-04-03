@@ -115,7 +115,6 @@ GameObject:
   - component: {fileID: 4777965709919868}
   - component: {fileID: 8418675167170442807}
   - component: {fileID: 4245919170937140995}
-  - component: {fileID: 8782751504217101204}
   - component: {fileID: 7234582219620934087}
   m_Layer: 0
   m_Name: Enemy2
@@ -333,25 +332,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!95 &8782751504217101204
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8782751504217101206}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: c7a100fde53d1b047ab6c001cde56a8d, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &7234582219620934087
 MonoBehaviour:
   m_ObjectHideFlags: 0

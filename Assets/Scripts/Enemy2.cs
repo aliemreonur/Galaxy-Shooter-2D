@@ -4,17 +4,16 @@ using UnityEngine;
 
 public class Enemy2 : MonoBehaviour
 {
-    //this should be better if it inherited from the enemy
+    //this should be better in a single enemy script or inherited from the enemy
     [SerializeField] GameObject _enemy2Laser, _explosion;
     Player _player;
     AudioSource _audioSource;
     SpawnManager _spawnManager;
-    Animator _animator;
 
     private float _coolDown = 1.5f;
     private float _canFire = -1f;
 
-    private float _enemy2Speed = 2f;
+    private float _enemy2Speed = 3f;
 
     [SerializeField] Sprite _laserSprite;
     [SerializeField] private GameObject _enemyShield;
@@ -22,8 +21,9 @@ public class Enemy2 : MonoBehaviour
     private int _shieldDecider;
     private float _distanceToPlayer;
     private bool _ramming = false;
+    private bool _ascending = false;
 
-    Vector3 _pos;
+    int _multiplier = -1;
 
 
     // Start is called before the first frame update
@@ -44,11 +44,7 @@ public class Enemy2 : MonoBehaviour
         {
             Debug.LogError("Enemy could not get the spawn manager");
         }
-        _animator = GetComponent<Animator>();
-        if(_animator == null)
-        {
-            Debug.LogError("Enemy2 could not get the animator component");
-        }
+
 
         _enemyShield.gameObject.SetActive(false);
         _shieldDecider = Random.Range(0, 2);
@@ -56,6 +52,8 @@ public class Enemy2 : MonoBehaviour
         {
             _enemyShield.gameObject.SetActive(true);
         }
+
+        transform.position = new Vector3(-11f, 6f, 0);
 
     }
 
@@ -75,25 +73,20 @@ public class Enemy2 : MonoBehaviour
                 lasers[i].transform.localScale *= 4;
             }
         }
+        if(!_ramming)
+        {
+            Movement2();
+        }
+
 
         _distanceToPlayer = Vector3.Distance(transform.position, _player.transform.position);
         if (_distanceToPlayer < 4)
         {
-            _animator.enabled = false;
-            _pos = transform.position;
             RamPlayer();
         }
-        else if(_distanceToPlayer > 4 && !_animator.enabled)
+        else if(_distanceToPlayer > 4)
         {
-            //transform.Translate(Vector3.down * _enemy2Speed * Time.deltaTime);
-            transform.position = Vector3.MoveTowards(transform.position, _pos, 2f * Time.deltaTime);
-            
             _ramming = false;
-
-            if(transform.position == _pos)
-            {
-               _animator.enabled = true;
-            }
         }
 
 
@@ -103,6 +96,26 @@ public class Enemy2 : MonoBehaviour
     {
         transform.position = Vector3.MoveTowards(transform.position, _player.transform.position, 2f * Time.deltaTime);
         _ramming = true;
+    }
+
+    private void Movement2()
+    {
+
+        transform.Translate(new Vector3(1, _multiplier, 0) * _enemy2Speed * Time.deltaTime);
+
+        if (transform.position.y >= 4.5f)
+        {
+            _multiplier = -1;
+        }
+        else if(transform.position.y <= 0.5f)
+        {
+            _multiplier = 1;
+        }
+
+        if(transform.position.x >= 10.25f)
+        {
+            transform.position = new Vector3(-10.25f, transform.position.y, 0);
+        } 
     }
 
     private void OnTriggerEnter2D(Collider2D other)
