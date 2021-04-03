@@ -60,8 +60,8 @@ public class Enemy : MonoBehaviour
         }
 
         _enemyShield.gameObject.SetActive(false);
-        _shieldDecider = Random.Range(0,2);
-        if(_shieldDecider == 1)
+        _shieldDecider = Random.Range(0, 2);
+        if (_shieldDecider == 1)
         {
             _enemyShield.gameObject.SetActive(true);
         }
@@ -127,6 +127,22 @@ public class Enemy : MonoBehaviour
         }
 
     }
+
+    public void ShieldEnemy()
+    {
+        //for wave 3 & 4
+        _enemyShield.gameObject.SetActive(true);
+    }
+
+    public void Shield50()
+    {
+        _shieldDecider = Random.Range(0, 2);
+        if (_shieldDecider == 1)
+        {
+            _enemyShield.gameObject.SetActive(true);
+        }
+    }
+
 
     private void OnTriggerEnter2D(Collider2D other)
     {

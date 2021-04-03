@@ -107,6 +107,7 @@ public class SpawnManager : MonoBehaviour
                     _ctdSpawn = false;
                     if (_activeEnemy <= 0)
                     {
+                        _activeEnemy = 0;
                         _wave = 2;
                         _uiManager.SetWave(_wave);
                         _ctdSpawn = true;
@@ -119,6 +120,7 @@ public class SpawnManager : MonoBehaviour
                 _ctdSpawn = false;
                 if (_activeEnemy <= 0)
                 {
+                    _activeEnemy = 0;
                     _wave = 3;
                     _uiManager.SetWave(_wave);
                     _ctdSpawn = true;
@@ -131,6 +133,7 @@ public class SpawnManager : MonoBehaviour
                 _ctdSpawn = false;
                 if (_activeEnemy <= 0)
                 {
+                    _activeEnemy = 0;
                     _wave = 4;
                     _uiManager.SetWave(_wave);
                     _ctdSpawn = true;
@@ -155,7 +158,7 @@ public class SpawnManager : MonoBehaviour
     {
         while(player.Live>0)
         {
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(2f);
             _selectedPowerUp = Random.Range(0, 7);
             _pos2ToSpawn = new Vector3(Random.Range(-9, 9), 7f, 0);
             if(_selectedPowerUp == 2 || _selectedPowerUp == 3 || _selectedPowerUp == 5)

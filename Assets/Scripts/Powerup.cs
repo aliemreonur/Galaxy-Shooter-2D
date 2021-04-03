@@ -33,6 +33,16 @@ public class Powerup : MonoBehaviour
             Destroy(this.gameObject);
         }
 
+        if(Input.GetKey(KeyCode.C))
+        {
+            MoveToPlayer();
+        }
+
+    }
+
+    public void MoveToPlayer()
+    {
+        transform.position = Vector3.MoveTowards(transform.position, player.transform.position, 4f * Time.deltaTime);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
