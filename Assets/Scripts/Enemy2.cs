@@ -24,6 +24,8 @@ public class Enemy2 : MonoBehaviour
     private float _distanceToPlayer;
     private bool _ramming = false;
     private bool _ascending = false;
+    private bool _isDead = false;
+    private bool shootingPowerUp = false;
 
     int _multiplier = -1;
 
@@ -65,37 +67,47 @@ public class Enemy2 : MonoBehaviour
 
             //
         }
+    }
 
+    private void FixedUpdate()
+    {
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 7f, 1 << 10);
+        Debug.DrawRay(transform.position, Vector2.down * 7, Color.green);
+        //does not make much sense for dodging - better to use collider in child tho
+
+        if (hit.collider != null)
+        {
+
+            if (hit.collider.name == "Ammo_PowerUp(Clone)" || hit.collider.name == "Life_PowerUp(Clone)" || hit.collider.name == "MultiShoot_PowerUp(Clone)" ||
+                hit.collider.name == "Shield_PowerUp(Clone)" || hit.collider.name == "Speed_PowerUp(Clone)" || hit.collider.name == "Triple_Shot_PowerUp(Clone)")
+            {
+                if (!shootingPowerUp)
+                {
+                    StartCoroutine(PowerUpShoot());
+                    Debug.Log("Enemy trying to  hit the power up bro");
+
+                }
+            }
+        }
+
+        else
+        {
+            return;
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Time.time > _canFire)
-        {
-            _coolDown = Random.Range(1f, 3f);
-            _canFire = Time.time + _coolDown;
-            GameObject enemyLaser = Instantiate(_enemy2Laser, transform.position, Quaternion.identity);
-            Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();
-            for (int i = 0; i < lasers.Length; i++)
-            {
-                lasers[i].AssignEnemy();
-                lasers[i].GetComponent<SpriteRenderer>().sprite = _laserSprite;
-                lasers[i].transform.localScale *= 4;
-                Vector2 _laserColliderSize = lasers[i].GetComponent<CapsuleCollider2D>().size;
-                _laserColliderSize = new Vector2(_laserColliderSize.x/2, _laserColliderSize.y / 4);
-                lasers[i].GetComponent<CapsuleCollider2D>().size = _laserColliderSize; 
-                //2 getcomponents - seems very ineffective.
-            }
-        }
 
+        EnemyFire();
         if(!_ramming)
         {
             Movement();
         }
 
         _distanceToPlayer = Vector3.Distance(transform.position, _player.transform.position);
-        if (_distanceToPlayer < 4)
+        if (_distanceToPlayer < 3)
         {
             RamPlayer();
         }
@@ -103,8 +115,6 @@ public class Enemy2 : MonoBehaviour
         {
             _ramming = false;
         }
-
-
     }
 
     public void RamPlayer()
@@ -131,6 +141,28 @@ public class Enemy2 : MonoBehaviour
         {
             transform.position = new Vector3(-10.25f, transform.position.y, 0);
         } 
+    }
+
+    private void EnemyFire()
+    {
+        if (Time.time > _canFire)
+        {
+
+            _coolDown = Random.Range(1f, 3f);
+            _canFire = Time.time + _coolDown;
+            GameObject enemyLaser = Instantiate(_enemy2Laser, transform.position, Quaternion.identity);
+            Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();
+            for (int i = 0; i < lasers.Length; i++)
+            {
+                lasers[i].AssignEnemy();
+                lasers[i].GetComponent<SpriteRenderer>().sprite = _laserSprite;
+                lasers[i].transform.localScale *= 4;
+                Vector2 _laserColliderSize = lasers[i].GetComponent<CapsuleCollider2D>().size;
+                _laserColliderSize = new Vector2(_laserColliderSize.x / 2, _laserColliderSize.y / 4);
+                lasers[i].GetComponent<CapsuleCollider2D>().size = _laserColliderSize;
+                //2 getcomponents - seems very ineffective.
+            }
+        }
     }
 
     public void ShieldEnemy()
@@ -205,6 +237,17 @@ public class Enemy2 : MonoBehaviour
             }
    
         }
+    }
+
+
+    IEnumerator PowerUpShoot()
+    {
+        _canFire = 0;
+        shootingPowerUp = true;
+        EnemyFire();
+        yield return new WaitForSeconds(2f);
+        shootingPowerUp = false;
+        yield return new WaitForSeconds(0.5f);
     }
 
 }

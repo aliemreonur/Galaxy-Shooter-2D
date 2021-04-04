@@ -119,7 +119,7 @@ public class Enemy : MonoBehaviour
     {
         Movement();
         _distanceToPlayer = Vector3.Distance(transform.position, _player.transform.position);
-        if(_distanceToPlayer < 4)
+        if(_distanceToPlayer < 3)
         {
             RamPlayer();
         }
@@ -130,8 +130,6 @@ public class Enemy : MonoBehaviour
 
     private void EnemyFire()
     {
-        //_cooldownnumber1 = 3;
-        //_cooldownnumber2 = 7;
         if (Time.time > _canFire && !_isDead)
         {
             //make cooldown timer shorter on the next waves
