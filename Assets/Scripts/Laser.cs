@@ -8,6 +8,13 @@ public class Laser : MonoBehaviour
     private bool _isEnemyLaser = false;
     // Start is called before the first frame update
   
+    public bool isEnemyLaser
+    {
+        get
+        {
+            return _isEnemyLaser;
+        }
+    }
 
     // Update is called once per frame
     void Update()

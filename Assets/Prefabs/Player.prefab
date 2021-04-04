@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 886888078}
   - component: {fileID: 886888077}
   - component: {fileID: 886888076}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: FastThruster
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -73,7 +73,7 @@ SpriteRenderer:
   m_SortingLayer: 2
   m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: a45d21c30e0154a9ca1a5d6fb2bf3cfa, type: 3}
-  m_Color: {r: 0, g: 0.7021618, b: 0.9811321, a: 1}
+  m_Color: {r: 0.98039216, g: 0.34899595, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -113,7 +113,7 @@ GameObject:
   - component: {fileID: 517432969163230520}
   - component: {fileID: 517432969163230526}
   - component: {fileID: 517432969163230527}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Thruster
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -215,7 +215,7 @@ GameObject:
   - component: {fileID: 517432969610913010}
   - component: {fileID: 517432969610913009}
   - component: {fileID: 517432969610913008}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Player_Shield
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -320,7 +320,7 @@ GameObject:
   - component: {fileID: 7207708025993479752}
   - component: {fileID: 517432969791007541}
   - component: {fileID: 517432969730975554}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -336,7 +336,7 @@ Transform:
   m_GameObject: {fileID: 1628222132307228580}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -4.03, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
   m_Children:
   - {fileID: 517432969610913010}
   - {fileID: 517432969163230520}
@@ -418,6 +418,7 @@ MonoBehaviour:
   _ultiShoot: {fileID: 6064077143993129690, guid: 755dabf2a559f9b4383993cf40ad7dfd, type: 3}
   _speed: 6
   _shield: {fileID: 517432969610913011}
+  _ultiActive: 0
   _tripleShotActive: 0
   _lives: 3
   _score: 0
@@ -579,7 +580,7 @@ GameObject:
   - component: {fileID: 6063517726220633066}
   - component: {fileID: 6129429732439804031}
   - component: {fileID: 7422643976956030884}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: LeftFire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -681,7 +682,7 @@ GameObject:
   - component: {fileID: 1388862594541086534}
   - component: {fileID: 4656652664815040799}
   - component: {fileID: 5985058420607727103}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RightFire
   m_TagString: Untagged
   m_Icon: {fileID: 0}

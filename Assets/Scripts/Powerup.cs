@@ -42,9 +42,9 @@ public class Powerup : MonoBehaviour
 
     public void MoveToPlayer()
     {
-        transform.position = Vector3.MoveTowards(transform.position, player.transform.position, 4f * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, player.transform.position, 4f*Time.deltaTime);
+        
     }
-
     private void OnTriggerEnter2D(Collider2D other)
     {
         
@@ -80,6 +80,12 @@ public class Powerup : MonoBehaviour
             }
             
             Destroy(this.gameObject, 0.05f);
+        }
+
+        else if(other.tag == "EnemyLaser")
+        {
+            Destroy(other.gameObject);
+            Destroy(this.gameObject);
         }
 
     }

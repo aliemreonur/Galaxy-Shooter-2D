@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8991108318329857667}
   - component: {fileID: 6242041675425992891}
   - component: {fileID: 1957525837311697913}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Speed_PowerUp
   m_TagString: Untagged
   m_Icon: {fileID: 0}

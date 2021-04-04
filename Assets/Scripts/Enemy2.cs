@@ -19,11 +19,17 @@ public class Enemy2 : MonoBehaviour
     [SerializeField] private GameObject _enemyShield;
 
     private int _shieldDecider;
+    private bool _shieldOn = false;
+
     private float _distanceToPlayer;
     private bool _ramming = false;
     private bool _ascending = false;
 
     int _multiplier = -1;
+
+    int _enemyId = 1;
+
+    Laser laser;
 
 
     // Start is called before the first frame update
@@ -46,14 +52,19 @@ public class Enemy2 : MonoBehaviour
         }
 
 
-        _enemyShield.gameObject.SetActive(false);
-        _shieldDecider = Random.Range(0, 2);
-        if (_shieldDecider == 1)
-        {
-            _enemyShield.gameObject.SetActive(true);
-        }
+        ShieldEnemy();
 
         transform.position = new Vector3(-11f, 6f, 0);
+
+        _enemyId = Random.Range(1, 3);
+        if(_enemyId == 2)
+        {
+            //can fire backwards bool true
+            //buna özel bir sprite
+            //player obje arkasında mı nasıl anlayacak? : raycasting
+
+            //
+        }
 
     }
 
@@ -71,13 +82,17 @@ public class Enemy2 : MonoBehaviour
                 lasers[i].AssignEnemy();
                 lasers[i].GetComponent<SpriteRenderer>().sprite = _laserSprite;
                 lasers[i].transform.localScale *= 4;
+                Vector2 _laserColliderSize = lasers[i].GetComponent<CapsuleCollider2D>().size;
+                _laserColliderSize = new Vector2(_laserColliderSize.x/2, _laserColliderSize.y / 4);
+                lasers[i].GetComponent<CapsuleCollider2D>().size = _laserColliderSize; 
+                //2 getcomponents - seems very ineffective.
             }
         }
+
         if(!_ramming)
         {
-            Movement2();
+            Movement();
         }
-
 
         _distanceToPlayer = Vector3.Distance(transform.position, _player.transform.position);
         if (_distanceToPlayer < 4)
@@ -94,11 +109,11 @@ public class Enemy2 : MonoBehaviour
 
     public void RamPlayer()
     {
-        transform.position = Vector3.MoveTowards(transform.position, _player.transform.position, 2f * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, _player.transform.position, _enemy2Speed * Time.deltaTime);
         _ramming = true;
     }
 
-    private void Movement2()
+    private void Movement()
     {
 
         transform.Translate(new Vector3(1, _multiplier, 0) * _enemy2Speed * Time.deltaTime);
@@ -118,6 +133,31 @@ public class Enemy2 : MonoBehaviour
         } 
     }
 
+    public void ShieldEnemy()
+    {
+        switch (_spawnManager.Wave)
+        {
+            case 3:
+                _shieldDecider = Random.Range(0, 2);
+                if (_shieldDecider == 1)
+                {
+                    _enemyShield.gameObject.SetActive(true);
+                    _shieldOn = true;
+                }
+
+                break;
+            case 4:
+                _enemyShield.SetActive(true);
+                _shieldOn = true;
+                break;
+            default:
+                _enemyShield.gameObject.SetActive(false);
+                _shieldOn = false;
+                break;
+
+        }
+    }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
 
@@ -127,10 +167,10 @@ public class Enemy2 : MonoBehaviour
             {
                 _player.Damage();
             }
-            if (_shieldDecider == 1)
+            if (_shieldOn)
             {
                 _enemyShield.gameObject.SetActive(false);
-                _shieldDecider = 0;
+                _shieldOn = false;
             }
             else
             {
@@ -146,10 +186,10 @@ public class Enemy2 : MonoBehaviour
         else if (other.gameObject.tag == "Laser")
         {
             Destroy(other.gameObject);
-            if (_shieldDecider == 1)
+            if (_shieldOn)
             {
                 _enemyShield.gameObject.SetActive(false);
-                _shieldDecider = 0;
+                _shieldOn = false;
             }
             else
             {

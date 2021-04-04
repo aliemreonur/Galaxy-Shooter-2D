@@ -7,6 +7,7 @@ public class UIManager : MonoBehaviour
 {
     [SerializeField] Text _scoreText;
     [SerializeField] Slider _slider;
+    [SerializeField] Slider _bossHealth;
     Player player;
 
     [SerializeField] private Sprite[] _liveSprites;
@@ -84,6 +85,12 @@ public class UIManager : MonoBehaviour
     public void SetThruster(float _thrustAmount)
     {
         _slider.value = _thrustAmount;
+    }
+
+    public void BossHealth(int bossHealth)
+    {
+        _bossHealth.gameObject.SetActive(true);
+        _bossHealth.value = bossHealth;
     }
 
     public void SetWave(int waveNumber)

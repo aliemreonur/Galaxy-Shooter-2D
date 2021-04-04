@@ -15,13 +15,25 @@ public class Enemy : MonoBehaviour
     private float _coolDown = 3f;
     private float _canFire = -1f;
 
+    private bool _isDead = false; //this is for making sure that enemy will not fire after its dead
+    private bool _shieldOn = false;
+    private bool _evading = false;
+    private bool shootingPowerUp = false;
+
     private int _movementDecider;
     private int _shieldDecider;
+
+    private int _cooldownnumber1, _cooldownnumber2;
+
 
     private float _distanceToPlayer;
 
     SpawnManager _spawnManager;
 
+    public bool isDead
+    {
+        get { return _isDead; }
+    }
     [SerializeField] GameObject _enemyLaser;
     
     // Start is called before the first frame update
@@ -61,13 +73,44 @@ public class Enemy : MonoBehaviour
             transform.position = new Vector3(10.2f, Random.Range(2f, 4.7f), 0);
         }
 
-        _enemyShield.gameObject.SetActive(false);
-        _shieldDecider = Random.Range(0, 2);
-        if (_shieldDecider == 1)
+        ShieldEnemy();
+
+    }
+
+    private void FixedUpdate()
+    {
+        //RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector3.down, 7f, 1<<8);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 7f, 1<<10);
+        Debug.DrawRay(transform.position, Vector2.down*7, Color.green);
+        //does not make much sense for dodging - better to use collider in child tho
+
+        if(hit.collider != null)
         {
-            _enemyShield.gameObject.SetActive(true);
+            //Debug.DrawLine(transform.position, transform.TransformDirection(Vector2.down));
+           //Debug.Log("Enemy ray hitted: " + hit.collider.name);
+
+            if(hit.collider.name == "Ammo_PowerUp(Clone)" || hit.collider.name == "Life_PowerUp(Clone)" || hit.collider.name == "MultiShoot_PowerUp(Clone)" || 
+                hit.collider.name == "Shield_PowerUp(Clone)" || hit.collider.name == "Speed_PowerUp(Clone)" || hit.collider.name == "Triple_Shot_PowerUp(Clone)")
+            {
+                //_canFire = 0;
+                //Insert bool shooting powerup here - if shooting to powerup cooldown shorter
+                _cooldownnumber1 = 1;
+                _cooldownnumber2 = 3;
+
+                if(!shootingPowerUp)
+                {
+                    StartCoroutine(PowerUpShoot());
+                    Debug.Log("Enemy trying to  hit the power up bro");
+
+                }
+
+            }
         }
 
+        else
+        {
+            return;
+        }
     }
 
 
@@ -82,43 +125,52 @@ public class Enemy : MonoBehaviour
         }
 
         //Debug.Log("My Distance to enemy is:" + _distanceToPlayer);
-        
-        if(Time.time >_canFire)
+        EnemyFire();
+    }
+
+    private void EnemyFire()
+    {
+        //_cooldownnumber1 = 3;
+        //_cooldownnumber2 = 7;
+        if (Time.time > _canFire && !_isDead)
         {
+            //make cooldown timer shorter on the next waves
             _coolDown = Random.Range(3f, 7f);
             _canFire = Time.time + _coolDown;
             GameObject enemyLaser = Instantiate(_enemyLaser, transform.position, Quaternion.identity);
             Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();
-            for(int i=0; i< lasers.Length; i++)
+            for (int i = 0; i < lasers.Length; i++)
             {
                 lasers[i].AssignEnemy();
             }
         }
-
     }
 
     private void Movement()
     {
-        switch(_movementDecider)
+        if(!_evading)
         {
-            case 1:
-                transform.Translate(Vector3.down * _enemySpeed * Time.deltaTime);
-                break;
-            case 2:
-                transform.Translate(Vector3.right * _enemySpeed * Time.deltaTime);
-                break;
-            case 3:
-                transform.Translate(Vector3.left * _enemySpeed * Time.deltaTime);
-                break;
-            
-            //will use these on the new waves
-                /*case 4:
-                transform.Translate(new Vector3(1, -1, 0) *_enemySpeed * Time.deltaTime );
-                break;
-            case 5:
-                transform.Translate(new Vector3(-1, -1, 0) * _enemySpeed * Time.deltaTime);
-                break;
-            */
+            switch (_movementDecider)
+            {
+                case 1:
+                    transform.Translate(Vector3.down * _enemySpeed * Time.deltaTime);
+                    break;
+                case 2:
+                    transform.Translate(Vector3.right * _enemySpeed * Time.deltaTime);
+                    break;
+                case 3:
+                    transform.Translate(Vector3.left * _enemySpeed * Time.deltaTime);
+                    break;
+
+                    //will use these on the new waves
+                    /*case 4:
+                    transform.Translate(new Vector3(1, -1, 0) *_enemySpeed * Time.deltaTime );
+                    break;
+                case 5:
+                    transform.Translate(new Vector3(-1, -1, 0) * _enemySpeed * Time.deltaTime);
+                    break;
+                */
+            }
         }
 
 
@@ -141,21 +193,67 @@ public class Enemy : MonoBehaviour
 
     public void RamPlayer()
     {
-        transform.position = Vector3.MoveTowards(transform.position, _player.transform.position, 2f * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, _player.transform.position, _enemySpeed/2 * Time.deltaTime);
     }
     public void ShieldEnemy()
     {
-        //for wave 3 & 4
-        _enemyShield.gameObject.SetActive(true);
+        switch(_spawnManager.Wave)
+        {
+            case 1:
+                _enemyShield.SetActive(false);
+                _shieldOn = false;
+                break;
+            case 2:
+                _shieldDecider = Random.Range(0, 2);
+                if (_shieldDecider == 1)
+                {
+                    _enemyShield.gameObject.SetActive(true);
+                    _shieldOn = true;
+                }
+                else
+                {
+                    _enemyShield.gameObject.SetActive(false);
+                    _shieldOn = false;
+
+                }
+                break;
+           default:
+                _enemyShield.gameObject.SetActive(true);
+                _shieldOn = true;
+                break;
+
+        }
     }
 
-    public void Shield50()
+    public void EvadeShot()
     {
-        _shieldDecider = Random.Range(0, 2);
-        if (_shieldDecider == 1)
+        Debug.Log("Enemy is trying to avoid it bro"); //works fine
+        _evading = true;
+
+        //returns null referance if we shot the enemy
+        if(_movementDecider == 1)
         {
-            _enemyShield.gameObject.SetActive(true);
+            int randomMove = Random.Range(0, 2);
+            if(randomMove == 0)
+            {
+                transform.Translate(Vector3.right * Time.deltaTime);
+            }
+            else
+            {
+                transform.Translate(Vector3.left * Time.deltaTime);
+            }
         }
+
+        else
+        {
+            transform.Translate(Vector3.right * 0 * Time.deltaTime); //stand still until the laser goes away
+        }
+    }
+
+    public void EvadeOver()
+    {
+        _evading = false;
+        Debug.Log("Evading is over");
     }
 
 
@@ -164,22 +262,22 @@ public class Enemy : MonoBehaviour
         
         if (other.gameObject.tag == "Player")
         {
-           if (_player)
-           {
-                _player.Damage();
-           }
-           if(_shieldDecider == 1)
+             _player.Damage();
+           
+           if (_shieldOn)
             {
                 _enemyShield.gameObject.SetActive(false);
-                _shieldDecider = 0;
+                _shieldOn = false;
            }
            else
            {
+                
                 _anim.SetTrigger("OnEnemyDeath");
                 _enemySpeed = 0;
                 _audioSource.Play();
                 _spawnManager.ActiveEnemy--;
                 Destroy(GetComponent<BoxCollider2D>());
+                _isDead = true;
                 Destroy(this.gameObject, 0.9f);
            }
         
@@ -188,27 +286,37 @@ public class Enemy : MonoBehaviour
         else if(other.gameObject.tag == "Laser")
         {
             Destroy(other.gameObject);
-            if (_shieldDecider == 1)
+            if (_shieldOn)
             {
                 _enemyShield.gameObject.SetActive(false);
-                _shieldDecider = 0;
+                _shieldOn = false;
             }
-            else
+            else 
             {
-                if (_player)
-                {
-                    _player.AddScore(10);
-                }
+
+                 _player.AddScore(10);
+
                 _anim.SetTrigger("OnEnemyDeath");
                 _enemySpeed = 0;
                 _audioSource.Play();
                 _spawnManager.ActiveEnemy--;
                 Destroy(GetComponent<BoxCollider2D>());
+                _isDead = true;
                 Destroy(this.gameObject, 0.9f);
 
             }
      
         }
+    }
+
+    IEnumerator PowerUpShoot()
+    {
+        _canFire = 0;
+        shootingPowerUp = true;
+        EnemyFire();
+        yield return new WaitForSeconds(2f);
+        shootingPowerUp = false;
+        yield return new WaitForSeconds(0.5f);
     }
 
 

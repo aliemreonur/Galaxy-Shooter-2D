@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1664271307852470954}
   - component: {fileID: 7976043797904269690}
   - component: {fileID: -7177212380096351875}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: MultiShoot_PowerUp
   m_TagString: Untagged
   m_Icon: {fileID: 0}

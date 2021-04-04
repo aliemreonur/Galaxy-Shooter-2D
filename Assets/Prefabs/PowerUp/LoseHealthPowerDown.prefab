@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2129027315641638227}
   - component: {fileID: 8796005133814667446}
   - component: {fileID: 5084625143389442334}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: LoseHealthPowerDown
   m_TagString: Untagged
   m_Icon: {fileID: 0}

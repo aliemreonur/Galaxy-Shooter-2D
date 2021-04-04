@@ -19,7 +19,7 @@ public class SpawnManager : MonoBehaviour
     private float _latestSpawnedRare = 0;
 
     private int _numSpawnedEnemy;
-    private int _wave = 1;
+    [SerializeField] private int _wave = 1;
 
     private bool _ctdSpawn = true;
 
@@ -95,7 +95,7 @@ public class SpawnManager : MonoBehaviour
                 else 
                 {
                     GameObject spawnedEnemy = Instantiate(enemy[0], _posToSpawn, Quaternion.identity);
-                    spawnedEnemy.transform.parent = enemyContainer.transform;
+                    //spawnedEnemy.transform.parent = enemyContainer.transform;
                 }
                 _numSpawnedEnemy++;
                 _activeEnemy++;
