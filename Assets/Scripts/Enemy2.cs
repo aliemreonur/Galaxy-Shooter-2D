@@ -57,16 +57,6 @@ public class Enemy2 : MonoBehaviour
         ShieldEnemy();
 
         transform.position = new Vector3(-11f, 6f, 0);
-
-        _enemyId = Random.Range(1, 3);
-        if(_enemyId == 2)
-        {
-            //can fire backwards bool true
-            //buna özel bir sprite
-            //player obje arkasında mı nasıl anlayacak? : raycasting
-
-            //
-        }
     }
 
     private void FixedUpdate()
@@ -85,7 +75,6 @@ public class Enemy2 : MonoBehaviour
                 {
                     StartCoroutine(PowerUpShoot());
                     Debug.Log("Enemy trying to  hit the power up bro");
-
                 }
             }
         }
@@ -189,8 +178,19 @@ public class Enemy2 : MonoBehaviour
                 _enemyShield.gameObject.SetActive(false);
                 _shieldOn = false;
                 break;
-
         }
+    }
+
+    public void EvadeShot()
+    {
+        //Debug.Log("Enemy2 is trying to avoid it bro"); //works fine
+        _enemy2Speed = 0;
+    }
+
+    public void EvadeOver()
+    {
+        //Debug.Log("Evading 2  is over");
+        _enemy2Speed = 3f;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -238,7 +238,6 @@ public class Enemy2 : MonoBehaviour
                 Destroy(GetComponent<SpriteRenderer>(), 0.1f);
                 Destroy(this.gameObject, 0.1f);
             }
-   
         }
     }
 

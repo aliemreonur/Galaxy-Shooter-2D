@@ -77,7 +77,7 @@ public class Enemy : MonoBehaviour
         _enemyTypeDecider = Random.Range(1, 3);
         if(_enemyTypeDecider == 2)
         {
-            GetComponent<SpriteRenderer>().color = Color.red;
+            GetComponent<SpriteRenderer>().color = Color.cyan;
             //maybe use inherited enemy class on enemy3 and make it another sprite.
         }
 
@@ -250,33 +250,28 @@ public class Enemy : MonoBehaviour
 
     public void EvadeShot()
     {
-        Debug.Log("Enemy is trying to avoid it bro"); //works fine
+        //Debug.Log("Enemy is trying to avoid it bro"); //works fine
         _evading = true;
 
         //returns null referance if we shot the enemy
         if(_movementDecider == 1)
         {
-            int randomMove = Random.Range(0, 2);
-            if(randomMove == 0)
-            {
-                transform.Translate(Vector3.right * Time.deltaTime);
-            }
-            else
-            {
-                transform.Translate(Vector3.left * Time.deltaTime);
-            }
+           //simply do nothing - dont want to make the game too hard 
         }
-
+        else if (_movementDecider == 2)
+        {
+            transform.Translate(Vector3.left * Time.deltaTime);
+        }
         else
         {
-            transform.Translate(Vector3.right * 0 * Time.deltaTime); //stand still until the laser goes away
+            transform.Translate(Vector3.right * Time.deltaTime); //stand still until the laser goes away
         }
     }
 
     public void EvadeOver()
     {
         _evading = false;
-        Debug.Log("Evading is over");
+        //Debug.Log("Evading is over");
     }
 
 
@@ -351,7 +346,4 @@ public class Enemy : MonoBehaviour
         _shootPlayerUp = false;
         yield return new WaitForSeconds(0.5f);
     }
-
-
-
 }
