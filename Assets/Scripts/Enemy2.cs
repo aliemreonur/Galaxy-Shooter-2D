@@ -105,8 +105,11 @@ public class Enemy2 : MonoBehaviour
         {
             Movement();
         }
+        if(_player.Live>0)
+        {
+            _distanceToPlayer = Vector3.Distance(transform.position, _player.transform.position);
+        }
 
-        _distanceToPlayer = Vector3.Distance(transform.position, _player.transform.position);
         if (_distanceToPlayer < 3)
         {
             RamPlayer();

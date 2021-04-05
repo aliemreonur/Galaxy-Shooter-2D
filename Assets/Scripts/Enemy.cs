@@ -11,6 +11,7 @@ public class Enemy : MonoBehaviour
 
     [SerializeField] private AudioClip _audioclip;
     [SerializeField] private GameObject _enemyShield;
+    [SerializeField] private Sprite _enemy3;
 
     private float _coolDown = 3f;
     private float _canFire = -1f;
@@ -18,17 +19,17 @@ public class Enemy : MonoBehaviour
     private bool _isDead = false; //this is for making sure that enemy will not fire after its dead
     private bool _shieldOn = false;
     private bool _evading = false;
-    private bool shootingPowerUp = false;
+    private bool _shootPowerUp = false;
+    private bool _shootPlayerUp = false;
 
     private int _movementDecider;
     private int _shieldDecider;
 
-    private int _cooldownnumber1, _cooldownnumber2;
-
-
     private float _distanceToPlayer;
 
     SpawnManager _spawnManager;
+
+    [SerializeField] private int _enemyTypeDecider;
 
     public bool isDead
     {
@@ -73,43 +74,55 @@ public class Enemy : MonoBehaviour
             transform.position = new Vector3(10.2f, Random.Range(2f, 4.7f), 0);
         }
 
+        _enemyTypeDecider = Random.Range(1, 3);
+        if(_enemyTypeDecider == 2)
+        {
+            GetComponent<SpriteRenderer>().color = Color.red;
+            //maybe use inherited enemy class on enemy3 and make it another sprite.
+        }
+
         ShieldEnemy();
 
     }
 
     private void FixedUpdate()
     {
-        //RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector3.down, 7f, 1<<8);
         RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 7f, 1<<10);
         Debug.DrawRay(transform.position, Vector2.down*7, Color.green);
-        //does not make much sense for dodging - better to use collider in child tho
 
         if(hit.collider != null)
         {
-            //Debug.DrawLine(transform.position, transform.TransformDirection(Vector2.down));
-           //Debug.Log("Enemy ray hitted: " + hit.collider.name);
-
             if(hit.collider.name == "Ammo_PowerUp(Clone)" || hit.collider.name == "Life_PowerUp(Clone)" || hit.collider.name == "MultiShoot_PowerUp(Clone)" || 
                 hit.collider.name == "Shield_PowerUp(Clone)" || hit.collider.name == "Speed_PowerUp(Clone)" || hit.collider.name == "Triple_Shot_PowerUp(Clone)")
             {
-                //_canFire = 0;
-                //Insert bool shooting powerup here - if shooting to powerup cooldown shorter
-                _cooldownnumber1 = 1;
-                _cooldownnumber2 = 3;
-
-                if(!shootingPowerUp)
+                if(!_shootPowerUp)
                 {
-                    StartCoroutine(PowerUpShoot());
-                    Debug.Log("Enemy trying to  hit the power up bro");
-
+                    StartCoroutine(PowerUpShoot()); //tested & works fine
                 }
-
             }
         }
 
         else
         {
             return;
+        }
+
+        if(_enemyTypeDecider == 2) //works fine but need to decrease the enemy ram distance
+        {
+            RaycastHit2D hit2 = Physics2D.Raycast(transform.position, Vector2.up, 7f, 1 << 10);
+            Debug.DrawRay(transform.position, Vector2.up * 7, Color.blue);
+
+            if(hit2.collider != null)
+            {
+                if (hit2.collider.name == "Player")
+                {
+                    Debug.Log("I am hitting the player now");
+                    StartCoroutine(PlayerShootUp());
+
+                    //enemy fire upwards.
+                }
+            }
+
         }
     }
 
@@ -118,8 +131,11 @@ public class Enemy : MonoBehaviour
     void Update()
     {
         Movement();
-        _distanceToPlayer = Vector3.Distance(transform.position, _player.transform.position);
-        if(_distanceToPlayer < 3)
+        if(_player.Live > 0)
+        {
+            _distanceToPlayer = Vector3.Distance(transform.position, _player.transform.position);
+        }
+        if(_distanceToPlayer < 2.5f)
         {
             RamPlayer();
         }
@@ -140,6 +156,15 @@ public class Enemy : MonoBehaviour
             for (int i = 0; i < lasers.Length; i++)
             {
                 lasers[i].AssignEnemy();
+                if(_shootPlayerUp)
+                {
+                    lasers[i].EnemyReverseShot = true;
+                }
+                if(_enemyTypeDecider == 2)
+                {
+                    lasers[i].GetComponent<SpriteRenderer>().color = Color.green;
+                }
+
             }
         }
     }
@@ -310,12 +335,23 @@ public class Enemy : MonoBehaviour
     IEnumerator PowerUpShoot()
     {
         _canFire = 0;
-        shootingPowerUp = true;
+        _shootPowerUp = true;
         EnemyFire();
         yield return new WaitForSeconds(2f);
-        shootingPowerUp = false;
+        _shootPowerUp = false;
         yield return new WaitForSeconds(0.5f);
     }
+
+    IEnumerator PlayerShootUp()
+    {
+        _canFire = 0;
+        _shootPlayerUp = true;
+        EnemyFire();
+        yield return new WaitForSeconds(2f);
+        _shootPlayerUp = false;
+        yield return new WaitForSeconds(0.5f);
+    }
+
 
 
 }

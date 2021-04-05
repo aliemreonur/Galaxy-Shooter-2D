@@ -6,6 +6,7 @@ public class Laser : MonoBehaviour
 {
     [SerializeField] private float _laserSpeed = 7f;
     private bool _isEnemyLaser = false;
+    private bool _enemyReverseShot = false;
     // Start is called before the first frame update
   
     public bool isEnemyLaser
@@ -13,6 +14,18 @@ public class Laser : MonoBehaviour
         get
         {
             return _isEnemyLaser;
+        }
+    }
+
+    public bool EnemyReverseShot
+    {
+        get
+        {
+            return _enemyReverseShot;
+        }
+        set
+        {
+            _enemyReverseShot = value;
         }
     }
 
@@ -31,6 +44,14 @@ public class Laser : MonoBehaviour
 
     private  void MoveDown()
     {
+        if(_enemyReverseShot)
+        {
+            _laserSpeed = -7f;
+        }
+        else
+        {
+            _laserSpeed = 7f;
+        }
         transform.Translate(Vector3.down * _laserSpeed * Time.deltaTime);
 
         if (transform.position.y < -10f)
@@ -62,6 +83,19 @@ public class Laser : MonoBehaviour
     {
         _isEnemyLaser = true;
         transform.tag = "EnemyLaser";
+    }
+
+    public void EnemyShotUp()
+    {
+        StartCoroutine(EnemyReverseShotRoutine());
+    }
+
+  IEnumerator EnemyReverseShotRoutine()
+    {
+        _enemyReverseShot = true;
+        yield return new WaitForSeconds(0.5f);
+        _enemyReverseShot = false;
+        yield return new WaitForSeconds(0.5f);
     }
 
 

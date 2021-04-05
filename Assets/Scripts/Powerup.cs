@@ -42,7 +42,11 @@ public class Powerup : MonoBehaviour
 
     public void MoveToPlayer()
     {
-        transform.position = Vector3.MoveTowards(transform.position, player.transform.position, 4f*Time.deltaTime);
+        if(player.Live >0)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, player.transform.position, 4f * Time.deltaTime);
+        }
+
         
     }
     private void OnTriggerEnter2D(Collider2D other)

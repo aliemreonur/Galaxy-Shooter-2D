@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject _rightFire, _leftFire, _explosion;
     [SerializeField] private GameObject _speedyThruster;
     [SerializeField] private GameObject _ultiShoot;
+    
     [SerializeField] private float _speed = 6f;
     private float _cooldownTime = 0.2f;
     private float _fireTime;
@@ -201,7 +202,7 @@ public class Player : MonoBehaviour
 
         transform.Translate(direction * _speed * Time.deltaTime);
 
-        transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, -4.8f, 0), 0);
+        transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, -4.8f, 1), 0);
 
         if (transform.position.x > 10.2f)
         {
