@@ -114,6 +114,7 @@ GameObject:
   - component: {fileID: 7630938783069215990}
   - component: {fileID: 1871004764198562687}
   - component: {fileID: 6518507815847408582}
+  - component: {fileID: 9161264218954067468}
   m_Layer: 9
   m_Name: LaserDetecter
   m_TagString: Untagged
@@ -169,7 +170,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.09094119, y: -2.4773169}
+  m_Offset: {x: -1.9686382, y: -1.8251907}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -180,7 +181,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 5.35589, y: 3.4137564}
+  m_Size: {x: 1.6004959, y: 2.109506}
   m_EdgeRadius: 0
 --- !u!114 &6518507815847408582
 MonoBehaviour:
@@ -194,6 +195,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09d0dc2a96297f444975c8ff77ec137b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!61 &9161264218954067468
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3572329285305149622}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 1.5908291, y: -1.7733835}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1.6780577, y: 2.147486}
+  m_EdgeRadius: 0
 --- !u!1 &4291065646000491870
 GameObject:
   m_ObjectHideFlags: 0

@@ -168,6 +168,11 @@ public class Enemy2 : MonoBehaviour
                     _enemyShield.gameObject.SetActive(true);
                     _shieldOn = true;
                 }
+                else
+                {
+                    _shieldOn = false;
+                    _enemyShield.gameObject.SetActive(false);
+                }
 
                 break;
             case 4:
@@ -244,7 +249,7 @@ public class Enemy2 : MonoBehaviour
 
     IEnumerator PowerUpShoot()
     {
-        _canFire = 0;
+        _canFire = Time.time +1;
         shootingPowerUp = true;
         EnemyFire();
         yield return new WaitForSeconds(2f);

@@ -10,9 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 7387222628902287210}
   - component: {fileID: 7387222628902287211}
-  - component: {fileID: 7387222628902287208}
   - component: {fileID: 7387222628902287209}
   - component: {fileID: 7387222628902287214}
+  - component: {fileID: 39903514}
+  - component: {fileID: 1760316335}
   m_Layer: 0
   m_Name: Boss
   m_TagString: Untagged
@@ -85,32 +86,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!61 &7387222628902287208
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7387222628902287215}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0.023049116, y: -0.15673423}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2.56, y: 2.56}
-    newSize: {x: 2.56, y: 2.56}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 2.403266, y: 1.9883814}
-  m_EdgeRadius: 0
 --- !u!114 &7387222628902287209
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -123,8 +98,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01f91a44e9511604a8d05f5ac04f790a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bossLaser: {fileID: 0}
-  _bossUltiShot: {fileID: 0}
+  _bossLaser: {fileID: 3517026499269471612, guid: 8c8ffa6b482645d4abd2a8ac7c7753c6, type: 3}
+  _explosion: {fileID: 7478513726425228802, guid: 3acda4bdcad2ff4428870f9c6dc59518, type: 3}
 --- !u!50 &7387222628902287214
 Rigidbody2D:
   serializedVersion: 4
@@ -146,3 +121,38 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!95 &39903514
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7387222628902287215}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 8eee61bb2899be84388ccb694f3c936e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!70 &1760316335
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7387222628902287215}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.014343728, y: -0.20798275}
+  m_Size: {x: 2.4595983, y: 1.8640536}
+  m_Direction: 1

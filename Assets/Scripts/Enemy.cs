@@ -24,6 +24,7 @@ public class Enemy : MonoBehaviour
 
     private int _movementDecider;
     private int _shieldDecider;
+    private float _cooldownmin, _cooldownmax;
 
     private float _distanceToPlayer;
 
@@ -83,6 +84,8 @@ public class Enemy : MonoBehaviour
 
         ShieldEnemy();
 
+        _cooldownmin = 3f;
+        _cooldownmax = 7f;
     }
 
     private void FixedUpdate()
@@ -102,11 +105,6 @@ public class Enemy : MonoBehaviour
             }
         }
 
-        else
-        {
-            return;
-        }
-
         if(_enemyTypeDecider == 2) //works fine but need to decrease the enemy ram distance
         {
             RaycastHit2D hit2 = Physics2D.Raycast(transform.position, Vector2.up, 7f, 1 << 10);
@@ -114,9 +112,10 @@ public class Enemy : MonoBehaviour
 
             if(hit2.collider != null)
             {
-                if (hit2.collider.name == "Player")
+                if (hit2.collider.name == "Player" && !_shootPlayerUp)
                 {
                     Debug.Log("I am hitting the player now");
+                    //_shootPlayerUp = true;
                     StartCoroutine(PlayerShootUp());
 
                     //enemy fire upwards.
@@ -149,7 +148,7 @@ public class Enemy : MonoBehaviour
         if (Time.time > _canFire && !_isDead)
         {
             //make cooldown timer shorter on the next waves
-            _coolDown = Random.Range(3f, 7f);
+            _coolDown = Random.Range(_cooldownmin, _cooldownmax);
             _canFire = Time.time + _coolDown;
             GameObject enemyLaser = Instantiate(_enemyLaser, transform.position, Quaternion.identity);
             Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();
@@ -159,6 +158,7 @@ public class Enemy : MonoBehaviour
                 if(_shootPlayerUp)
                 {
                     lasers[i].EnemyReverseShot = true;
+                    StopCoroutine(PlayerShootUp());
                 }
                 if(_enemyTypeDecider == 2)
                 {
@@ -184,15 +184,6 @@ public class Enemy : MonoBehaviour
                 case 3:
                     transform.Translate(Vector3.left * _enemySpeed * Time.deltaTime);
                     break;
-
-                    //will use these on the new waves
-                    /*case 4:
-                    transform.Translate(new Vector3(1, -1, 0) *_enemySpeed * Time.deltaTime );
-                    break;
-                case 5:
-                    transform.Translate(new Vector3(-1, -1, 0) * _enemySpeed * Time.deltaTime);
-                    break;
-                */
             }
         }
 
@@ -256,7 +247,8 @@ public class Enemy : MonoBehaviour
         //returns null referance if we shot the enemy
         if(_movementDecider == 1)
         {
-           //simply do nothing - dont want to make the game too hard 
+            //simply do nothing - dont want to make the game too hard
+            _evading = false;
         }
         else if (_movementDecider == 2)
         {
@@ -339,11 +331,13 @@ public class Enemy : MonoBehaviour
 
     IEnumerator PlayerShootUp()
     {
-        _canFire = 0;
         _shootPlayerUp = true;
-        EnemyFire();
-        yield return new WaitForSeconds(2f);
-        _shootPlayerUp = false;
-        yield return new WaitForSeconds(0.5f);
+        while(_shootPlayerUp)
+        {
+            _canFire = 0;
+            EnemyFire();
+            yield return new WaitForSeconds(3f);
+            _shootPlayerUp = false;
+        }
     }
 }

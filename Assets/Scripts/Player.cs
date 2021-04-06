@@ -21,6 +21,7 @@ public class Player : MonoBehaviour
     private bool _thrustActive;
     private bool _speedActive;
     [SerializeField] private bool _ultiActive;
+    private bool _missileActive;
 
     [SerializeField]
     private bool _tripleShotActive = false;
@@ -50,19 +51,27 @@ public class Player : MonoBehaviour
         }      
     }
 
-    public int Score
-    {
-        get
-        {
-            return _score;
-        }
-    }
-
     public int Ammo
     {
         get
         {
             return _ammo;
+        }
+        set
+        {
+            _ammo = value;
+        }
+    }
+
+    public bool MissileActive
+    {
+        get
+        {
+            return _missileActive;
+        }
+        set
+        {
+            _missileActive = value;
         }
     }
 
@@ -406,6 +415,11 @@ public class Player : MonoBehaviour
             Destroy(other.gameObject);
         }
         
+    }
+
+    public void BossAmmoUnlimited()
+    {
+        _ammo = 999;
     }
 
 }

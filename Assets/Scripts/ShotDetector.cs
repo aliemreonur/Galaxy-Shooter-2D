@@ -29,11 +29,8 @@ public class ShotDetector : MonoBehaviour
     {
         if(other.gameObject.tag == "Laser")
         {
-            //Debug.Log("Enemy Laser is approaching!"); // works fine
-            //tell the enemy to move to one side. 
             enemy.EvadeShot();
-        }
-        
+        }  
     }
 
     private void OnTriggerExit2D(Collider2D collision)

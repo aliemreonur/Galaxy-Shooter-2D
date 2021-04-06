@@ -7,6 +7,7 @@ public class SpawnManager : MonoBehaviour
     //[SerializeField] private Enemy enemy;
     [SerializeField] private GameObject[] enemy;
     [SerializeField] GameObject[] _powerUps;
+    [SerializeField] private GameObject _boss;
 
     [SerializeField] private int _selectedPowerUp;
 
@@ -26,6 +27,10 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] private int _activeEnemy;
 
     UIManager _uiManager;
+
+    private bool _bossSpawned = false;
+
+    private int _ammoUnSpawned = 0;
 
     public int Wave
     {
@@ -72,6 +77,11 @@ public class SpawnManager : MonoBehaviour
         StartCoroutine(SpawnPowerUpRoutine());
     }
 
+    void PowerUpSpawner()
+    {
+
+    }
+
     IEnumerator SpawnEnemyRoutine()
     {
         while(player.Live > 0 )
@@ -95,7 +105,7 @@ public class SpawnManager : MonoBehaviour
                 else 
                 {
                     GameObject spawnedEnemy = Instantiate(enemy[0], _posToSpawn, Quaternion.identity);
-                    //spawnedEnemy.transform.parent = enemyContainer.transform;
+                    spawnedEnemy.transform.parent = enemyContainer.transform;
                 }
                 _numSpawnedEnemy++;
                 _activeEnemy++;
@@ -115,7 +125,7 @@ public class SpawnManager : MonoBehaviour
                     }
             }
 
-            else if (_numSpawnedEnemy == 25)
+            else if (_numSpawnedEnemy == 20)
             {
                 _ctdSpawn = false;
                 if (_activeEnemy <= 0)
@@ -124,11 +134,11 @@ public class SpawnManager : MonoBehaviour
                     _wave = 3;
                     _uiManager.SetWave(_wave);
                     _ctdSpawn = true;
-                    _spawnTime = 1.5f;
+                    _spawnTime = 1.6f;
                 }
             }
 
-            else if (_numSpawnedEnemy == 45)
+            else if (_numSpawnedEnemy == 30)
             {
                 _ctdSpawn = false;
                 if (_activeEnemy <= 0)
@@ -137,17 +147,22 @@ public class SpawnManager : MonoBehaviour
                     _wave = 4;
                     _uiManager.SetWave(_wave);
                     _ctdSpawn = true;
-                    _spawnTime = 1.25f;
+                    _spawnTime = 1.50f;
                 }
             }
-            else if (_numSpawnedEnemy == 70)
+            else if (_numSpawnedEnemy == 40)
             {
                 _ctdSpawn = false;
                 if (_activeEnemy <= 0)
                 {
                      _wave = 5;
                      _uiManager.SetWave(_wave);
-                     //boss level
+                    if(!_bossSpawned)
+                    {
+                        Instantiate(_boss, new Vector3(0, 8, 0), Quaternion.identity);
+                        _bossSpawned = true;
+                    }
+                    _spawnTime = 9999999; //just in case  
                 }
             }
             yield return new WaitForSeconds(_spawnTime);
@@ -161,24 +176,35 @@ public class SpawnManager : MonoBehaviour
             yield return new WaitForSeconds(2f);
             _selectedPowerUp = Random.Range(0, 7);
             _pos2ToSpawn = new Vector3(Random.Range(-9, 9), 7f, 0);
-            if(_selectedPowerUp == 2 || _selectedPowerUp == 3 || _selectedPowerUp == 5)
+            if (_ammoUnSpawned == 4 || _selectedPowerUp == 4) //making sure to spawn ammo at least 1 per 5 power up spawns.
             {
-                //we want these objects to be spawned more rarely
-                if(Time.time > _latestSpawnedRare)
-                {
-                    Instantiate(_powerUps[_selectedPowerUp], _pos2ToSpawn, Quaternion.identity);
-                    _latestSpawnedRare = Time.time + _rareCoolDown;
-                }
-                else
-                {
-                    _selectedPowerUp = Random.Range(0, 7);
-                }
+                Instantiate(_powerUps[4], _pos2ToSpawn, Quaternion.identity);
+                _ammoUnSpawned = 0;
             }
             else
             {
-                Instantiate(_powerUps[_selectedPowerUp], _pos2ToSpawn, Quaternion.identity);
+                if (_selectedPowerUp == 2 || _selectedPowerUp == 3 || _selectedPowerUp == 5 || _selectedPowerUp == 6)
+                {
+                    //we want these objects to be spawned more rarely
+                    if (Time.time > _latestSpawnedRare)
+                    {
+                        Instantiate(_powerUps[_selectedPowerUp], _pos2ToSpawn, Quaternion.identity);
+                        _latestSpawnedRare = Time.time + _rareCoolDown;
+                    }
+                    else
+                    {
+                        yield return new WaitForSeconds(0.5f);
+                    }
+                }
+                else
+                {
+                    Instantiate(_powerUps[_selectedPowerUp], _pos2ToSpawn, Quaternion.identity);
+                }
+                _ammoUnSpawned++;
+
             }
-            yield return new WaitForSeconds(Random.Range(5f, 7f));    
+
+            yield return new WaitForSeconds(Random.Range(3f, 5f));    
         }
     }
 }
