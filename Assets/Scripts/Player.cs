@@ -251,7 +251,7 @@ public class Player : MonoBehaviour
             _lives--;
             _cameraShake.ShakeCamera();
             _uiManager.UpdateLives(_lives);
-            if(_lives == 0)
+            if(_lives <= 0)
             {
                 Instantiate(_explosion, transform.position, Quaternion.identity);
                 _uiManager.GameOver();

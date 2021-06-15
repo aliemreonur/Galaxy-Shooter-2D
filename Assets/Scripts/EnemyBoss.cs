@@ -97,9 +97,9 @@ public class EnemyBoss : MonoBehaviour
 
     void BossFire()
     {
-        if(Time.time > _canFire && _alive)
+        if(Time.time > _canFire && _alive && _player.Live>0)
         {
-            if(!_ultiOn)
+            if(!_ultiOn && _player != null)
             {
                 Instantiate(_bossLaser, new Vector2(Mathf.Clamp(_player.transform.position.x, -5f, 5f), 2), Quaternion.identity);
                 _canFire = Time.time + _fireCoolDown;

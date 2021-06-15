@@ -207,7 +207,11 @@ public class Enemy : MonoBehaviour
 
     public void RamPlayer()
     {
-        transform.position = Vector3.MoveTowards(transform.position, _player.transform.position, _enemySpeed/2 * Time.deltaTime);
+        if(_player.Live >0)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, _player.transform.position, _enemySpeed / 2 * Time.deltaTime);
+
+        }
     }
     public void ShieldEnemy()
     {

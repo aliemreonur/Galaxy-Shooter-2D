@@ -12,6 +12,7 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] private Sprite[] _liveSprites;
     [SerializeField] private Image _livesImg;
+    [SerializeField] private Image _gameOverImg;
 
     [SerializeField] private Text _gameOverText;
     [SerializeField] private Text _restartLevelText;
@@ -68,6 +69,7 @@ public class UIManager : MonoBehaviour
     public void GameOver()
     {  
         _restartLevelText.gameObject.SetActive(true);
+        _gameOverImg.gameObject.SetActive(true);
         StartCoroutine(GameOverRoutine());
         _gameManager.GameOver();
         
